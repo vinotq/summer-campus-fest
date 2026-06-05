@@ -16,9 +16,8 @@ export default function StartPage() {
   useEffect(() => {
     api.current()
       .then(r => {
-        if (r.status === 'finished') navigate('/result', { replace: true })
-        else if (r.status === 'in_progress') setResuming(true)
-        else setChecking(false)
+        if (r.status === 'in_progress') setResuming(true)
+        else setChecking(false) // finished или нет сессии — показываем форму
       })
       .catch(() => setChecking(false)) // 401 = нет сессии, показываем форму
   }, [])
