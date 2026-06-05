@@ -5,6 +5,7 @@ import { CaptchaShell } from '../../components/CaptchaShell.jsx'
 import { Grid3x3Question, TilesQuestion, SliderQuestion, AudioQuestion, ImageCodeQuestion } from './QuestionTypes.jsx'
 import { api } from '../../utils/api.js'
 import { Mark } from '../../components/Brand.jsx'
+import { createGameChannel } from '../../utils/gameChannel.js'
 
 const KIND_LABELS = {
   grid3x3:   'ВЫБЕРИТЕ ВСЕ ПОДХОДЯЩИЕ',
@@ -24,6 +25,18 @@ export default function PlayPage() {
   const timerRef = useRef(null)
   const delayRef = useRef(null)
   const toastAdvanceRef = useRef(null)
+  const channelRef = useRef(null)
+  const [passive, setPassive] = useState(false)
+
+  // Cross-tab coordination: only the earliest-mounted tab auto-submits
+  useEffect(() => {
+    const ch = createGameChannel(
+      () => setPassive(true),
+      () => setPassive(false),
+    )
+    channelRef.current = ch
+    return () => ch.destroy()
+  }, [])
 
   async function loadCurrent() {
     try {
@@ -73,16 +86,16 @@ export default function PlayPage() {
     return () => clearInterval(timerRef.current)
   }, [state?.question?.id])
 
-  // Auto-submit on timeout (учитываем delay)
+  // Auto-submit on timeout — только для активного таба (не пассивного)
   useEffect(() => {
-    if (!state?.question) return
+    if (!state?.question || passive) return
     const { timeLimitMs, answerDelayMs = 0, startedAt } = state.question
     const totalBudget = timeLimitMs + answerDelayMs
     const remaining = totalBudget - (Date.now() - startedAt)
     if (remaining <= 0) { handleAnswer(getEmptyAnswer(state.question), true); return }
     const t = setTimeout(() => handleAnswer(getEmptyAnswer(state.question)), remaining)
     return () => clearTimeout(t)
-  }, [state?.question?.id])
+  }, [state?.question?.id, passive])
 
   function getEmptyAnswer(question) {
     const t = question.type
