@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Mark, Logo } from '../../components/Brand.jsx'
 import { api } from '../../utils/api.js'
@@ -9,18 +9,6 @@ export default function StartPage() {
   const [firstName, setFirstName] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-
-  const [checking, setChecking] = useState(true)
-  const [resuming, setResuming] = useState(false)
-
-  useEffect(() => {
-    api.current()
-      .then(r => {
-        if (r.status === 'in_progress') setResuming(true)
-        else setChecking(false) // finished или нет сессии — показываем форму
-      })
-      .catch(() => setChecking(false)) // 401 = нет сессии, показываем форму
-  }, [])
 
   async function handleStart(e) {
     e.preventDefault()
@@ -40,35 +28,6 @@ export default function StartPage() {
       setLoading(false)
     }
   }
-
-  if (resuming) return (
-    <div style={{ minHeight: '100dvh', background: 'var(--c-bg)', display: 'flex', flexDirection: 'column', maxWidth: 480, margin: '0 auto' }}>
-      <div className="kp-stripe" />
-      <div style={{ padding: '18px 16px 8px' }}>
-        <Logo size={20} />
-      </div>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 16px' }}>
-        <Mark size={56} style={{ marginBottom: 20 }} />
-        <h2 style={{ margin: '0 0 8px', font: '700 26px/.95 var(--font-display)', letterSpacing: '-.03em', color: 'var(--c-ink)', textAlign: 'center' }}>
-          Капча в процессе
-        </h2>
-        <p style={{ margin: '0 0 28px', font: '500 14px/1.4 var(--font-display)', color: 'var(--c-ink-500)', textAlign: 'center' }}>
-          У вас есть незавершённая сессия. Продолжить капчу в этой вкладке?
-        </p>
-        <button className="kp-btn kp-btn--primary" style={{ width: '100%', maxWidth: 320, height: 52, font: '700 15px/1 var(--font-display)' }}
-          onClick={() => navigate('/play', { replace: true })}>
-          Продолжить
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        </button>
-      </div>
-    </div>
-  )
-
-  if (checking) return (
-    <div style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--c-bg)' }}>
-      <div style={{ font: '600 15px/1 var(--font-display)', color: 'var(--c-ink-400)' }}>Загрузка…</div>
-    </div>
-  )
 
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--c-bg)', display: 'flex', flexDirection: 'column', maxWidth: 480, margin: '0 auto' }}>
