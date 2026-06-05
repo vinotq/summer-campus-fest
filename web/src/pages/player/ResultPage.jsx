@@ -138,10 +138,10 @@ export default function ResultPage() {
   const [replayError, setReplayError] = useState('')
 
   useEffect(() => {
-    api.result().then(r => {
+    api.current().then(r => {
       if (r.status !== 'finished') navigate('/play', { replace: true })
       else setData(r.result)
-    }).catch(() => navigate('/play', { replace: true }))
+    }).catch(() => navigate('/', { replace: true }))
 
     api.sessionHistory().then(r => setHistory(r)).catch(() => {})
   }, [])
