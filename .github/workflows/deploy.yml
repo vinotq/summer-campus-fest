@@ -14,8 +14,9 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASS }}
           script: |
-            cd /opt/campus-fest-summer
+            cd /opt/summer-campus-fest
             git pull
             docker compose build
             docker compose up -d
