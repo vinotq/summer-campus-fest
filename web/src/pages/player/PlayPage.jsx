@@ -107,6 +107,7 @@ export default function PlayPage() {
     } catch (err) {
       setSubmitting(false)
       if (err.code === 'session_finished') { navigate('/result', { replace: true }); return }
+      if (err.code === 'already_answered') { await loadCurrent(); return }
     }
   }
 
