@@ -23,6 +23,7 @@ export default function PlayPage() {
   const [delayLeft, setDelayLeft] = useState(0)   // ms оставшейся задержки
   const timerRef = useRef(null)
   const delayRef = useRef(null)
+  const toastAdvanceRef = useRef(null)
 
   async function loadCurrent() {
     try {
@@ -90,6 +91,17 @@ export default function PlayPage() {
     return { text: '' }
   }
 
+  // When tab returns to foreground after being hidden, advance a pending toast immediately
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible' && toastAdvanceRef.current) {
+        toastAdvanceRef.current()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => document.removeEventListener('visibilitychange', handleVisibility)
+  }, [])
+
   async function handleAnswer(answerData, silent = false) {
     if (submitting || !state?.question) return
     setSubmitting(true)
@@ -104,12 +116,15 @@ export default function PlayPage() {
         return
       }
       setToast(result)
-      setTimeout(async () => {
+      const advance = async () => {
+        toastAdvanceRef.current = null
         setToast(null)
         if (result.next === 'finished') { navigate('/result', { replace: true }); return }
         await loadCurrent()
         setSubmitting(false)
-      }, 1500)
+      }
+      toastAdvanceRef.current = advance
+      setTimeout(advance, 1500)
     } catch (err) {
       setSubmitting(false)
       if (err.code === 'session_finished') { navigate('/result', { replace: true }); return }
