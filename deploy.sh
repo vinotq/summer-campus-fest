@@ -56,6 +56,11 @@ ssh "$TARGET" bash << EOF
   docker compose build
   docker compose up -d
 
+  # Устанавливаем nginx-конфиг для системного nginx
+  cp $REMOTE_DIR/sirius-campus.nginx.conf /etc/nginx/sites-available/sirius-campus.ru
+  ln -sf /etc/nginx/sites-available/sirius-campus.ru /etc/nginx/sites-enabled/sirius-campus.ru
+  nginx -t && systemctl reload nginx
+
   echo ""
   docker compose ps
 EOF

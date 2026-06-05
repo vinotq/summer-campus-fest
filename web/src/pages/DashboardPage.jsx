@@ -49,11 +49,22 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* QR placeholder */}
+      {/* QR block */}
       <div style={{ position: 'absolute', left: 64, bottom: 48 }}>
-        <div style={{ width: 420, height: 420, background: '#fff', borderRadius: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, border: '4px dashed #ccc' }}>
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="#bbb" strokeWidth="1.5"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="#bbb" strokeWidth="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="#bbb" strokeWidth="1.5"/><path d="M14 14h1M17 14h3M14 17h3M19 17v3M14 20h3" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round"/></svg>
-          <span style={{ font: '600 18px/1.4 var(--font-display)', color: '#aaa' }}>QR-код</span>
+        <div style={{ padding: 3, borderRadius: 24, background: 'linear-gradient(135deg, #E77B2E 0%, #814387 100%)' }}>
+          <div style={{ borderRadius: 22, background: 'linear-gradient(160deg,#1e1024 0%,#2a1a2e 100%)', padding: '28px 28px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
+            <div style={{ padding: 14, background: '#fff', borderRadius: 20 }}>
+              <img src="/qr-code.svg" width={360} height={360} style={{ display: 'block' }} alt="QR" />
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ font: '800 26px/1 var(--font-display)', letterSpacing: '-.02em', color: '#fff', marginBottom: 7 }}>
+                Сканируй и участвуй
+              </div>
+              <div style={{ font: '500 18px/1 var(--font-display)', color: 'rgba(255,255,255,.45)' }}>
+                sirius-campus.ru
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

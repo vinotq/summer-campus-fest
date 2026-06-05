@@ -10,8 +10,18 @@ export default function StartPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const [checking, setChecking] = useState(true)
+
   useEffect(() => {
-    if (localStorage.getItem('cf_played')) navigate('/result', { replace: true })
+    if (!localStorage.getItem('cf_played')) { setChecking(false); return }
+    api.current().then(r => {
+      if (r.status === 'finished') navigate('/result', { replace: true })
+      else if (r.status === 'in_progress') navigate('/play', { replace: true })
+      else setChecking(false)
+    }).catch(() => {
+      localStorage.removeItem('cf_played')
+      setChecking(false)
+    })
   }, [])
 
   async function handleStart(e) {
@@ -33,6 +43,12 @@ export default function StartPage() {
       setLoading(false)
     }
   }
+
+  if (checking) return (
+    <div style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--c-bg)' }}>
+      <div style={{ font: '600 15px/1 var(--font-display)', color: 'var(--c-ink-400)' }}>Загрузка…</div>
+    </div>
+  )
 
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--c-bg)', display: 'flex', flexDirection: 'column', maxWidth: 480, margin: '0 auto' }}>

@@ -12,8 +12,8 @@ services:
       UPLOADS_DIR: /data/uploads
     volumes:
       - ./data:/data
-    expose:
-      - "3000"
+    ports:
+      - "127.0.0.1:3000:3000"
     mem_limit: 1g
     cpus: 0.9
 
@@ -23,22 +23,6 @@ services:
       dockerfile: Dockerfile.web
     restart: unless-stopped
     volumes:
-      - web_static:/usr/share/nginx/html
+      - ./web-dist:/var/www/web
     depends_on:
       - app
-
-  nginx:
-    image: nginx:alpine
-    restart: unless-stopped
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - web_static:/var/www/web:ro
-      - ./data/uploads:/var/www/uploads:ro
-    depends_on:
-      - app
-      - web
-
-volumes:
-  web_static:

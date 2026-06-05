@@ -10,5 +10,4 @@ RUN cd web && npm run build
 FROM alpine AS final
 WORKDIR /out
 COPY --from=build /app/web/dist ./
-VOLUME ["/usr/share/nginx/html"]
-CMD ["sh", "-c", "cp -r /out/. /usr/share/nginx/html/ && tail -f /dev/null"]
+CMD ["sh", "-c", "cp -r /out/. /var/www/web/ && echo 'Frontend deployed' && tail -f /dev/null"]
