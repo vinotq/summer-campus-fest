@@ -153,7 +153,6 @@ export default function ResultPage() {
     setReplayError('')
     try {
       await api.start({ lastName: data.lastName, firstName: data.firstName })
-      localStorage.setItem('cf_played', '1')
       navigate('/play', { replace: true })
     } catch (err) {
       if (err.code === 'max_attempts') {

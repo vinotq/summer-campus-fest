@@ -13,15 +13,13 @@ export default function StartPage() {
   const [checking, setChecking] = useState(true)
 
   useEffect(() => {
-    if (!localStorage.getItem('cf_played')) { setChecking(false); return }
-    api.current().then(r => {
-      if (r.status === 'finished') navigate('/result', { replace: true })
-      else if (r.status === 'in_progress') navigate('/play', { replace: true })
-      else setChecking(false)
-    }).catch(() => {
-      localStorage.removeItem('cf_played')
-      setChecking(false)
-    })
+    api.current()
+      .then(r => {
+        if (r.status === 'finished') navigate('/result', { replace: true })
+        else if (r.status === 'in_progress') navigate('/play', { replace: true })
+        else setChecking(false)
+      })
+      .catch(() => setChecking(false)) // 401 = нет сессии, показываем форму
   }, [])
 
   async function handleStart(e) {
@@ -30,7 +28,6 @@ export default function StartPage() {
     setLoading(true); setError('')
     try {
       await api.start({ lastName: lastName.trim(), firstName: firstName.trim() })
-      localStorage.setItem('cf_played', '1')
       navigate('/play', { replace: true })
     } catch (err) {
       if (err.code === 'conflict') { navigate('/play', { replace: true }); return }
