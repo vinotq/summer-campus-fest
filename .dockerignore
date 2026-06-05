@@ -1,0 +1,7 @@
+data/
+handoff/
+**/node_modules
+**/.git
+web/dist
+server/scripts
+*.zip

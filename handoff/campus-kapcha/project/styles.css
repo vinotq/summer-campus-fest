@@ -1,0 +1,277 @@
+/* ===== Sirius.Kapcha — design tokens ===== */
+:root {
+  --c-purple: #814387;
+  --c-purple-700: #6b3771;
+  --c-purple-100: #f4ebf5;
+  --c-purple-50:  #faf5fb;
+
+  --c-orange: #E77B2E;
+  --c-orange-700: #c5651e;
+  --c-orange-100: #fdf1e6;
+  --c-orange-50:  #fef8f1;
+
+  --c-ink:        #1f1f1f;
+  --c-ink-700:    #414141;
+  --c-ink-500:    #6b6b6b;
+  --c-ink-400:    #8a8a8a;
+  --c-ink-300:    #b8b6b3;
+  --c-line:       #e7e4df;
+  --c-line-soft:  #f1efeb;
+  --c-bg:         #f7f5f1;     /* warm canvas */
+  --c-paper:      #ffffff;
+  --c-ok:         #2f8a4d;
+  --c-err:        #c83a3a;
+  --c-warn:       #d99211;
+
+  --grad: linear-gradient(135deg, #E77B2E 0%, #814387 100%);
+  --grad-soft: linear-gradient(135deg, #fdf1e6 0%, #f4ebf5 100%);
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+
+  --shadow-1: 0 1px 0 rgba(31,31,31,.04), 0 1px 2px rgba(31,31,31,.05);
+  --shadow-2: 0 2px 4px rgba(31,31,31,.04), 0 8px 24px rgba(31,31,31,.08);
+  --shadow-pop: 0 24px 60px -20px rgba(129,67,135,.35);
+
+  --font-display: 'Onest', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* page bg behind the canvas */
+html, body {
+  margin: 0;
+  background: #ece8e1;
+  font-family: var(--font-display);
+  color: var(--c-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+* { box-sizing: border-box; }
+
+/* === Generic primitives reused across screens === */
+.kp-card {
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+}
+
+.kp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  font: 600 15px/1 var(--font-display);
+  letter-spacing: -.01em;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .15s ease, background .15s ease;
+}
+.kp-btn:active { transform: translateY(1px); }
+.kp-btn--primary {
+  background: var(--grad);
+  color: #fff;
+  box-shadow: 0 8px 20px -8px rgba(129,67,135,.55);
+}
+.kp-btn--solid {
+  background: var(--c-ink);
+  color: #fff;
+}
+.kp-btn--ghost {
+  background: transparent;
+  color: var(--c-ink-700);
+  border: 1px solid var(--c-line);
+}
+
+.kp-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  background: #fff;
+  border: 1.5px solid var(--c-line);
+  border-radius: var(--r-md);
+  font: 500 16px/1 var(--font-display);
+  color: var(--c-ink);
+  transition: border-color .12s, box-shadow .12s;
+  outline: none;
+}
+.kp-input:focus { border-color: var(--c-purple); box-shadow: 0 0 0 3px rgba(129,67,135,.12); }
+.kp-input::placeholder { color: var(--c-ink-400); }
+
+.kp-eyebrow {
+  font: 600 11px/1 var(--font-display);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--c-ink-500);
+}
+
+.kp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font: 600 11px/1 var(--font-display);
+  letter-spacing: .02em;
+  background: var(--c-line-soft);
+  color: var(--c-ink-700);
+  white-space: nowrap;
+}
+.kp-chip--purple { background: var(--c-purple-100); color: var(--c-purple-700); }
+.kp-chip--orange { background: var(--c-orange-100); color: var(--c-orange-700); }
+.kp-chip--live   { background: #ffe9e9; color: #c83a3a; }
+.kp-chip--ok     { background: #e7f4ec; color: #2f8a4d; }
+.kp-chip--mute   { background: #f1efeb; color: #8a8a8a; }
+
+/* "Captcha" branded header strip — thin gradient with mark */
+.kp-stripe {
+  height: 4px;
+  width: 100%;
+  background: var(--grad);
+}
+
+/* dotted grid background used in some panels */
+.kp-dot-bg {
+  background-image: radial-gradient(rgba(65,65,65,.08) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* The brand 8-point sparkle, scaled by font-size on container */
+.kp-mark {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background: var(--grad);
+  -webkit-mask: url('brand/mark.svg') center/contain no-repeat;
+          mask: url('brand/mark.svg') center/contain no-repeat;
+}
+.kp-mark--solid { background: var(--c-ink); }
+.kp-mark--white { background: #fff; }
+.kp-mark--purple { background: var(--c-purple); }
+.kp-mark--orange { background: var(--c-orange); }
+
+/* Captcha modal — google-recaptcha-style framing */
+.kp-captcha {
+  background: #fff;
+  border: 1px solid var(--c-line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.kp-captcha__head {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--c-line-soft);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* timer pill */
+.kp-timer {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 26px; padding: 0 10px;
+  background: var(--c-ink); color: #fff;
+  border-radius: 999px;
+  font: 600 12px/1 var(--font-mono);
+  letter-spacing: .02em;
+}
+.kp-timer__dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #76e08b;
+}
+
+/* progress bar */
+.kp-progress {
+  height: 4px; width: 100%; background: var(--c-line-soft);
+  border-radius: 999px; overflow: hidden;
+}
+.kp-progress > span {
+  display: block; height: 100%;
+  background: var(--grad);
+  border-radius: 999px;
+}
+
+/* ===== Admin layout primitives ===== */
+.kp-shell { background: #f6f4f0; min-height: 100%; }
+.kp-side {
+  width: 220px; padding: 18px 14px;
+  border-right: 1px solid var(--c-line);
+  background: #fff;
+  display: flex; flex-direction: column;
+}
+.kp-nav__item {
+  display: flex; align-items: center; gap: 10px;
+  height: 36px; padding: 0 10px;
+  border-radius: 8px;
+  font: 500 13.5px/1 var(--font-display);
+  color: var(--c-ink-700);
+  cursor: pointer;
+}
+.kp-nav__item--active { background: var(--c-ink); color: #fff; }
+
+/* dense table */
+.kp-table { width: 100%; border-collapse: collapse; font: 500 13px/1.2 var(--font-display); }
+.kp-table th {
+  text-align: left; font: 600 11px/1 var(--font-display);
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--c-ink-500);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--c-line);
+  background: #fafaf8;
+}
+.kp-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--c-line-soft);
+  vertical-align: middle;
+  color: var(--c-ink);
+}
+.kp-table tr:hover td { background: #fafaf8; }
+
+/* sparkline bullet for score */
+.kp-score-bar {
+  display: inline-block;
+  width: 80px; height: 6px;
+  background: var(--c-line-soft);
+  border-radius: 999px; overflow: hidden;
+  vertical-align: middle;
+}
+.kp-score-bar > span {
+  display: block; height: 100%;
+  background: var(--grad);
+}
+
+/* tabular nums */
+.kp-num { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+
+/* tiny stamp-like badge for the certificate */
+.kp-stamp {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255,255,255,.55);
+  font: 700 10px/1.1 var(--font-display);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+  transform: rotate(-8deg);
+  padding: 6px;
+}
+
+/* Annotation pill used inside design canvas frames */
+.kp-anno {
+  position: absolute;
+  background: #fffbe6;
+  border: 1px solid #f0e1a1;
+  color: #6b5a16;
+  font: 500 11px/1.3 var(--font-display);
+  padding: 6px 8px;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(120,90,10,.12);
+}

@@ -1,0 +1,14 @@
+FROM node:20-alpine AS build
+WORKDIR /app
+
+COPY web/package*.json ./web/
+RUN cd web && npm ci
+
+COPY web ./web
+RUN cd web && npm run build
+
+FROM alpine AS final
+WORKDIR /out
+COPY --from=build /app/web/dist ./
+VOLUME ["/usr/share/nginx/html"]
+CMD ["sh", "-c", "cp -r /out/. /usr/share/nginx/html/ && tail -f /dev/null"]

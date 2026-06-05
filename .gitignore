@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+web/node_modules/
+server/node_modules/
+
+# Build output
+web/dist/
+
+# Environment — никогда не коммитить
+.env
+.env.local
+.env.*.local
+
+# Database and uploads — переносятся через deploy.sh
+data/db.sqlite
+data/db.sqlite-shm
+data/db.sqlite-wal
+data/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
