@@ -78,7 +78,7 @@ export default function PlayPage() {
     const { timeLimitMs, answerDelayMs = 0, startedAt } = state.question
     const totalBudget = timeLimitMs + answerDelayMs
     const remaining = totalBudget - (Date.now() - startedAt)
-    if (remaining <= 0) { handleAnswer(getEmptyAnswer(state.question)); return }
+    if (remaining <= 0) { handleAnswer(getEmptyAnswer(state.question), true); return }
     const t = setTimeout(() => handleAnswer(getEmptyAnswer(state.question)), remaining)
     return () => clearTimeout(t)
   }, [state?.question?.id])
@@ -90,13 +90,19 @@ export default function PlayPage() {
     return { text: '' }
   }
 
-  async function handleAnswer(answerData) {
+  async function handleAnswer(answerData, silent = false) {
     if (submitting || !state?.question) return
     setSubmitting(true)
     clearInterval(timerRef.current)
     clearInterval(delayRef.current)
     try {
       const result = await api.answer({ questionId: state.question.id, answerData })
+      if (silent) {
+        if (result.next === 'finished') { navigate('/result', { replace: true }); return }
+        await loadCurrent()
+        setSubmitting(false)
+        return
+      }
       setToast(result)
       setTimeout(async () => {
         setToast(null)

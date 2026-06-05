@@ -109,21 +109,6 @@ export function getCurrentQuestion(sessionId) {
   if (!question) throw Object.assign(new Error(`Вопрос ${qid} не найден`), { code: 'internal' });
 
   const startedAt = answersRepo.touchPending(sessionId, qid);
-
-  // Если время вопроса уже вышло — засчитываем пустой ответ и переходим дальше
-  const totalBudget = question.time_limit_ms + (question.answer_delay_ms ?? 0);
-  if (Date.now() - startedAt > totalBudget * 1.5) {
-    const { correct, partialRatio } = checkers[question.type](question.payload, {});
-    const points = calcScore({ baseScore: question.base_score, timeLimitMs: question.time_limit_ms, elapsedMs: question.time_limit_ms, correct, partialRatio });
-    db.transaction(() => {
-      answersRepo.insert({ sessionId, questionId: qid, startedAt, answeredAt: Date.now(), elapsedMs: question.time_limit_ms, answerData: {}, correct, score: points });
-      answersRepo.deletePending(sessionId, qid);
-      sessionsRepo.advanceIndex(sessionId, points);
-    })();
-    emitAdmin('players:update', { sessionId, progress: { answered: idx + 1, total: snapshot.length }, totalScore: sessionsRepo.getById(sessionId).total_score });
-    return getCurrentQuestion(sessionId); // рекурсивно — найдём первый незавершённый
-  }
-
   const pub = questionTypes[question.type].publicView(question.payload);
 
   return {
