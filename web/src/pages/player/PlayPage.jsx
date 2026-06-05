@@ -92,7 +92,13 @@ export default function PlayPage() {
     const { timeLimitMs, answerDelayMs = 0, startedAt } = state.question
     const totalBudget = timeLimitMs + answerDelayMs
     const remaining = totalBudget - (Date.now() - startedAt)
-    if (remaining <= 0) { handleAnswer(getEmptyAnswer(state.question), true); return }
+    if (remaining <= 0) {
+      // Delay to let BroadcastChannel heartbeat arrive before auto-submitting
+      const t = setTimeout(() => {
+        if (!channelRef.current?.isPassive()) handleAnswer(getEmptyAnswer(state.question), true)
+      }, 800)
+      return () => clearTimeout(t)
+    }
     const t = setTimeout(() => handleAnswer(getEmptyAnswer(state.question)), remaining)
     return () => clearTimeout(t)
   }, [state?.question?.id, passive])
