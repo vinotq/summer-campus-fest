@@ -57,14 +57,12 @@ export default function DashboardPage() {
           style={{ cursor: 'pointer', padding: 3, borderRadius: 24, background: 'linear-gradient(135deg, #E77B2E 0%, #814387 100%)' }}
           title={qrHidden ? 'Показать QR-код' : 'Скрыть QR-код'}
         >
-          {qrHidden ? (
-            <div style={{ borderRadius: 22, background: '#fff', width: 416, padding: '28px 28px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0, boxSizing: 'border-box', minHeight: 472 }}>
-              <img src="/brand/logo-color.png" alt="КампусФест" style={{ width: 280, height: 'auto', display: 'block' }} />
-            </div>
-          ) : (
-            <div style={{ borderRadius: 22, background: 'linear-gradient(160deg,#1e1024 0%,#2a1a2e 100%)', padding: '28px 28px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-              <div style={{ padding: 14, background: '#fff', borderRadius: 20 }}>
-                <img src="/qr-code.svg" width={360} height={360} style={{ display: 'block' }} alt="QR" />
+          <div style={{ borderRadius: 22, background: 'linear-gradient(160deg,#1e1024 0%,#2a1a2e 100%)', padding: '28px 28px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
+              <div style={{ padding: 14, background: '#fff', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 360, height: 360, boxSizing: 'border-box' }}>
+                {qrHidden
+                  ? <img src="/brand/logo-color.png" alt="КампусФест" style={{ width: 280, height: 'auto', display: 'block' }} />
+                  : <img src="/qr-code.svg" width={332} height={332} style={{ display: 'block' }} alt="QR" />
+                }
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ font: '800 26px/1 var(--font-display)', letterSpacing: '-.02em', color: '#fff', marginBottom: 7 }}>
@@ -75,7 +73,6 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
-          )}
         </div>
       </div>
     </div>
