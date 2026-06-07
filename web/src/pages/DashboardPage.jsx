@@ -7,6 +7,7 @@ export default function DashboardPage() {
   const [top, setTop] = useState([])
   const [liveCount, setLiveCount] = useState(0)
   const [totalCount, setTotalCount] = useState(0)
+  const [qrHidden, setQrHidden] = useState(false)
 
   useEffect(() => {
     api.dashboardTop().then(r => setTop(r.top))
@@ -51,20 +52,30 @@ export default function DashboardPage() {
 
       {/* QR block */}
       <div style={{ position: 'absolute', left: 64, bottom: 48 }}>
-        <div style={{ padding: 3, borderRadius: 24, background: 'linear-gradient(135deg, #E77B2E 0%, #814387 100%)' }}>
-          <div style={{ borderRadius: 22, background: 'linear-gradient(160deg,#1e1024 0%,#2a1a2e 100%)', padding: '28px 28px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-            <div style={{ padding: 14, background: '#fff', borderRadius: 20 }}>
-              <img src="/qr-code.svg" width={360} height={360} style={{ display: 'block' }} alt="QR" />
+        <div
+          onClick={() => setQrHidden(h => !h)}
+          style={{ cursor: 'pointer', padding: 3, borderRadius: 24, background: 'linear-gradient(135deg, #E77B2E 0%, #814387 100%)' }}
+          title={qrHidden ? 'Показать QR-код' : 'Скрыть QR-код'}
+        >
+          {qrHidden ? (
+            <div style={{ borderRadius: 22, background: '#fff', width: 416, padding: '28px 28px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0, boxSizing: 'border-box', minHeight: 472 }}>
+              <img src="/brand/logo-color.png" alt="КампусФест" style={{ width: 280, height: 'auto', display: 'block' }} />
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ font: '800 26px/1 var(--font-display)', letterSpacing: '-.02em', color: '#fff', marginBottom: 7 }}>
-                Сканируй и участвуй
+          ) : (
+            <div style={{ borderRadius: 22, background: 'linear-gradient(160deg,#1e1024 0%,#2a1a2e 100%)', padding: '28px 28px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
+              <div style={{ padding: 14, background: '#fff', borderRadius: 20 }}>
+                <img src="/qr-code.svg" width={360} height={360} style={{ display: 'block' }} alt="QR" />
               </div>
-              <div style={{ font: '500 18px/1 var(--font-display)', color: 'rgba(255,255,255,.45)' }}>
-                sirius-campus.ru
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ font: '800 26px/1 var(--font-display)', letterSpacing: '-.02em', color: '#fff', marginBottom: 7 }}>
+                  Сканируй и участвуй
+                </div>
+                <div style={{ font: '500 18px/1 var(--font-display)', color: 'rgba(255,255,255,.45)' }}>
+                  sirius-campus.ru
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
