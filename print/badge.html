@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --purple: #814387;
+  --orange: #E77B2E;
+  --dark: #222222;
+}
+
+body {
+  font-family: 'Onest', sans-serif;
+  background: #f0eaf2;
+  padding: 32px;
+}
+
+.ui {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.ui-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--purple);
+  margin-bottom: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--purple);
+  margin-bottom: 5px;
+}
+input {
+  width: 100%;
+  font-family: 'Onest', sans-serif;
+  font-size: 14px;
+  padding: 9px 13px;
+  border: 2px solid #d4c4d9;
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  color: var(--dark);
+  transition: border-color .15s;
+}
+input:focus { border-color: var(--purple); }
+
+.btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+button {
+  font-family: 'Onest', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+button:hover { opacity: .82; }
+.btn-add  { background: var(--purple); color: white; }
+.btn-print { background: var(--orange); color: white; }
+.btn-clear { background: white; color: var(--purple); border: 2px solid var(--purple); }
+
+.section-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: #aaa;
+  margin-bottom: 14px;
+}
+
+.layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.left { flex: 1; min-width: 280px; }
+.right { flex-shrink: 0; }
+
+.preview-wrap {
+  width: 283px;
+  height: 425px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(129,67,135,.3);
+}
+
+.badge-scaler {
+  width: 566px;
+  height: 850px;
+  transform: scale(.5);
+  transform-origin: top left;
+}
+
+.badge {
+  width: 566px;
+  height: 850px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Onest', sans-serif;
+}
+
+.badge-top {
+  background: var(--purple);
+  padding: 40px 44px 36px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+  height: 340px;
+}
+
+.badge-top-icon {
+  position: absolute;
+  right: -36px;
+  top: -24px;
+  width: 260px;
+  height: 248px;
+  opacity: .14;
+  pointer-events: none;
+}
+
+.badge-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.badge-logo-icon {
+  width: 44px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.badge-logo-icon path { fill: white !important; }
+.badge-top-icon path { fill: white !important; }
+
+.badge-logo-text {
+  line-height: 1.1;
+}
+.badge-logo-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -.01em;
+}
+.badge-logo-sub {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,.65);
+}
+
+.badge-role {
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+}
+.badge-role-pill {
+  display: inline-block;
+  background: rgba(255,255,255,.18);
+  border: 1.5px solid rgba(255,255,255,.4);
+  color: white;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 8px 22px;
+  border-radius: 50px;
+}
+
+.badge-accent {
+  height: 5px;
+  background: linear-gradient(90deg, var(--orange) 0%, #f4a460 100%);
+  flex-shrink: 0;
+}
+
+.badge-bottom {
+  flex: 1;
+  padding: 40px 44px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.badge-name {
+  font-size: 46px;
+  font-weight: 900;
+  color: var(--dark);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  word-break: break-word;
+}
+
+.badge-station {
+  margin-top: 24px;
+}
+.badge-station-label {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: #bbb;
+  margin-bottom: 4px;
+}
+.badge-station-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--orange);
+}
+
+.badge-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.badge-footer-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--purple);
+  opacity: .25;
+}
+.badge-footer-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.batch-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+.thumb-outer {
+  position: relative;
+}
+.thumb-box {
+  width: 90px;
+  height: 135px;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(129,67,135,.25);
+}
+.thumb-scaler {
+  width: 566px;
+  height: 850px;
+  transform: scale(0.1588);
+  transform-origin: top left;
+}
+.thumb-name {
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  margin-top: 5px;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.thumb-del {
+  position: absolute;
+  top: -6px; right: -6px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #e44;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+@media print {
+  body { background: white !important; padding: 0 !important; margin: 0 !important; }
+  .ui { display: none !important; }
+
+  .print-sheet {
+    display: block !important;
+  }
+
+  .print-item {
+    width: 100mm;
+    height: 150mm;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+    margin: 0;
+    padding: 0;
+  }
+  .print-item:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .print-item .badge {
+    width: 100mm;
+    height: 150mm;
+    font-size: 10pt;
+  }
+
+  .print-item .badge-top {
+    height: 58mm;
+    padding: 6mm 7mm 5mm;
+  }
+  .print-item .badge-top-icon {
+    width: 44mm;
+    height: 42mm;
+    right: -5mm;
+    top: -3mm;
+  }
+  .print-item .badge-logo-row { gap: 2.5mm; align-items: center; }
+  .print-item .badge-logo-icon { width: 8mm; height: 8mm; flex-shrink: 0; display: block; }
+  .print-item .badge-logo-icon svg { width: 8mm !important; height: 8mm !important; display: block; }
+  .print-item .badge-logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .print-item .badge-logo-name { font-size: 11pt; font-weight: 800; display: block; white-space: nowrap; }
+  .print-item .badge-logo-sub  { font-size: 7pt; font-weight: 500; display: block; white-space: nowrap; margin-top: 0.3mm; }
+  .print-item .badge-role-pill { font-size: 7.5pt; padding: 1.2mm 3.5mm; border-width: 0.4mm; }
+  .print-item .badge-accent    { height: 0.8mm; }
+  .print-item .badge-bottom    { padding: 6mm 7mm 7mm; }
+  .print-item .badge-name      { font-size: 19pt; letter-spacing: -.01em; }
+  .print-item .badge-station   { margin-top: 3mm; }
+  .print-item .badge-station-label { font-size: 6pt; margin-bottom: 0.8mm; }
+  .print-item .badge-station-value { font-size: 10.5pt; }
+  .print-item .badge-footer-dot { width: 2mm; height: 2mm; }
+  .print-item .badge-footer-dots { gap: 1.2mm; }
+
+  @page {
+    size: 100mm 150mm;
+    margin: 0;
+  }
+}
+
+.print-sheet { display: none; }
+</style>
+</head>
+<body>
+
+<div class="ui">
+  <div class="ui-title">Бейджи организаторов - КампусФест</div>
+
+  <div class="layout">
+    <div class="left">
+      <div class="form-grid">
+        <div class="full">
+          <label>Роль</label>
+          <input id="f-role" value="Организатор" placeholder="Организатор">
+        </div>
+        <div class="full">
+          <label>ФИО</label>
+          <input id="f-name" value="Иванова Мария Сергеевна" placeholder="Фамилия Имя Отчество">
+        </div>
+        <div class="full">
+          <label>Станция <span style="font-weight:400;color:#bbb">(необязательно)</span></label>
+          <input id="f-station" value="Регистрация" placeholder="">
+        </div>
+      </div>
+
+      <div class="btns">
+        <button class="btn-add" onclick="addBadge()">+ В очередь печати</button>
+        <button class="btn-print" onclick="window.print()">🖨 Печать (Ctrl+P)</button>
+        <button class="btn-clear" onclick="clearAll()">Очистить</button>
+      </div>
+
+      <div class="section-label">Очередь: <span id="count">0</span> бейджей</div>
+      <div class="batch-grid" id="batch-grid"></div>
+    </div>
+
+    <div class="right">
+      <div class="section-label" style="text-align:center">Предпросмотр</div>
+      <div class="preview-wrap">
+        <div class="badge-scaler" id="live-preview"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="print-sheet" id="print-sheet"></div>
+
+<script>
+const SIGN_PATH = `M189.063 8.74827C178.539 13.4856 167.668 18.3797 156.556 18.3797C145.772 18.3797 133.587 13.7691 121.422 9.16614C103.663 2.44578 85.9473 -4.25768 72.7023 3.43135C59.8425 10.8151 59.7893 27.4249 59.7345 44.4507C59.6931 57.2977 59.6513 70.3814 54.1063 79.917C49.356 87.9326 40.9701 96.7316 32.1976 105.937C16.7019 122.197 0 139.723 0 156.427C0 172.894 12.2021 185.066 24.5223 197.356C31.7745 204.591 39.0674 211.866 43.9368 220.083C48.5731 227.905 52.2001 238.116 55.9332 248.625C62.7816 267.903 69.9868 288.183 84.4303 296.569C97.3985 304.097 111.331 297.825 125.934 291.251C136.458 286.514 147.331 281.619 158.443 281.619C169.227 281.619 181.413 286.23 193.578 290.835C211.337 297.555 229.052 304.257 242.297 296.569C255.156 289.185 255.21 272.574 255.265 255.548C255.306 242.702 255.349 229.619 260.894 220.083C266.154 211.206 275.873 203.428 285.638 195.611C300.268 183.904 315 172.116 315 156.427C315 138.323 300.252 119.254 286.812 101.877C280.83 94.1439 275.109 86.746 271.062 79.917C266.426 72.0943 262.799 61.8836 259.065 51.3746C252.217 32.097 245.012 11.8159 230.57 3.43135C217.6 -4.09825 203.667 2.17398 189.063 8.74827ZM168.859 112.061C168.219 112.913 166.863 112.551 166.737 111.495L158.655 43.6755C158.49 42.2898 156.471 42.2898 156.306 43.6755L148.267 111.14C148.141 112.197 146.784 112.559 146.145 111.706L105.286 57.2568C104.448 56.1393 102.699 57.1449 103.252 58.427L130.258 121.064C130.679 122.041 129.687 123.031 128.704 122.611L65.8039 95.7248C64.5163 95.1746 63.507 96.9161 64.6294 97.7509L119.536 138.6C120.391 139.237 120.028 140.588 118.967 140.713L50.7603 148.772C49.3691 148.936 49.3691 150.947 50.7603 151.111L118.792 159.148C119.853 159.274 120.216 160.625 119.36 161.262L64.6195 201.988C63.4971 202.823 64.5064 204.565 65.7936 204.015L128.719 177.117C129.7 176.697 130.693 177.687 130.272 178.665L103.262 241.313C102.709 242.595 104.457 243.6 105.296 242.482L146.131 188.064C146.771 187.212 148.127 187.574 148.253 188.63L156.306 256.207C156.471 257.593 158.49 257.593 158.655 256.207L166.749 188.275C166.875 187.218 168.232 186.856 168.871 187.709L209.974 242.483C210.813 243.6 212.561 242.595 212.008 241.313L184.998 178.665C184.576 177.687 185.569 176.697 186.551 177.117L249.476 204.015C250.764 204.565 251.773 202.823 250.65 201.988L195.868 161.23C195.012 160.593 195.375 159.242 196.436 159.117L264.201 151.111C265.592 150.947 265.592 148.936 264.201 148.772L196.26 140.745C195.199 140.619 194.836 139.268 195.691 138.631L250.64 97.7513C251.763 96.9161 250.753 95.1746 249.466 95.7248L186.566 122.611C185.585 123.031 184.592 122.041 185.013 121.064L212.019 58.4262C212.571 57.1441 210.823 56.1385 209.984 57.2564L168.859 112.061Z`;
+
+function signSVG(fill, w, h) {
+  return `<svg width="${w}" height="${h}" viewBox="0 0 315 300" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="${SIGN_PATH}" fill="${fill}"/></svg>`;
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function badgeHTML(role, name, station) {
+  const stationBlock = station.trim()
+    ? `<div class="badge-station">
+         <div class="badge-station-label">Станция</div>
+         <div class="badge-station-value">${esc(station)}</div>
+       </div>`
+    : '';
+
+  const dots = Array.from({length:3}, () => '<div class="badge-footer-dot"></div>').join('');
+
+  return `<div class="badge">
+  <div class="badge-top">
+    <div class="badge-top-icon">${signSVG('white', 260, 248)}</div>
+    <div class="badge-logo-row">
+      <div class="badge-logo-icon">${signSVG('white', 44, 42)}</div>
+      <div class="badge-logo-text">
+        <div class="badge-logo-name">КампусФест</div>
+        <div class="badge-logo-sub">Летний</div>
+      </div>
+    </div>
+    <div class="badge-role">
+      <div class="badge-role-pill">${esc(role)}</div>
+    </div>
+  </div>
+  <div class="badge-accent"></div>
+  <div class="badge-bottom">
+    <div>
+      <div class="badge-name">${esc(name)}</div>
+      ${stationBlock}
+    </div>
+    <div class="badge-footer">
+      <div class="badge-footer-dots">${dots}</div>
+      <div style="font-size:14px;font-weight:600;color:#ccc;letter-spacing:.04em">2026</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function refresh() {
+  const role    = document.getElementById('f-role').value || 'Организатор';
+  const name    = document.getElementById('f-name').value || 'Имя Фамилия';
+  const station = document.getElementById('f-station').value;
+  document.getElementById('live-preview').innerHTML = badgeHTML(role, name, station);
+}
+
+['f-role','f-name','f-station'].forEach(id =>
+  document.getElementById(id).addEventListener('input', refresh)
+);
+
+let items = [];
+
+function addBadge() {
+  items.push({
+    role:    document.getElementById('f-role').value.trim() || 'Организатор',
+    name:    document.getElementById('f-name').value.trim() || 'Имя Фамилия',
+    station: document.getElementById('f-station').value.trim()
+  });
+  renderBatch();
+}
+
+function removeBadge(i) {
+  items.splice(i, 1);
+  renderBatch();
+}
+
+function clearAll() {
+  items = [];
+  renderBatch();
+}
+
+function renderBatch() {
+  document.getElementById('count').textContent = items.length;
+  const grid = document.getElementById('batch-grid');
+  grid.innerHTML = '';
+  items.forEach((it, i) => {
+    const outer = document.createElement('div');
+    outer.className = 'thumb-outer';
+    outer.innerHTML = `
+      <div class="thumb-box">
+        <div class="thumb-scaler">${badgeHTML(it.role, it.name, it.station)}</div>
+      </div>
+      <div class="thumb-name">${esc(it.name)}</div>
+      <button class="thumb-del" onclick="removeBadge(${i})">✕</button>
+    `;
+    grid.appendChild(outer);
+  });
+
+  const sheet = document.getElementById('print-sheet');
+  sheet.innerHTML = '';
+  items.forEach(it => {
+    const el = document.createElement('div');
+    el.className = 'print-item';
+    el.innerHTML = badgeHTML(it.role, it.name, it.station);
+    sheet.appendChild(el);
+  });
+}
+
+refresh();
+</script>
+</body>
+</html>
