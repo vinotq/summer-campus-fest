@@ -46,7 +46,7 @@ export default function AdminLayout() {
 
   if (isMobile) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#f6f4f0' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#F1F3F5' }}>
         {/* Mobile top bar */}
         <div style={{ background: '#fff', borderBottom: '1px solid var(--c-line)', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 20 }}>
           <Logo size={16} />
@@ -72,7 +72,7 @@ export default function AdminLayout() {
             <NavLink key={item.to} to={item.to} style={{ textDecoration: 'none', flex: 1 }}
               className={({ isActive }) => isActive ? 'kp-tab-active' : 'kp-tab'}>
               {({ isActive }) => (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, padding: '8px 4px 10px', color: isActive ? 'var(--c-purple)' : 'var(--c-ink-400)' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, padding: '8px 4px 10px', color: isActive ? 'var(--c-blue)' : 'var(--c-ink-400)' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d={item.icon} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -87,7 +87,7 @@ export default function AdminLayout() {
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', minHeight: '100vh', background: '#f6f4f0' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', minHeight: '100vh', background: '#F1F3F5' }}>
       <aside className="kp-side">
         <div style={{ padding: '0 6px 18px' }}><Logo size={18} /></div>
         <nav style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

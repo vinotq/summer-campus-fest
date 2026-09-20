@@ -23,8 +23,8 @@ export function Grid3x3Question({ question, onAnswer, disabled }) {
                     onError={e => { e.target.style.display='none' }} />
                 </div>
                 {sel && <>
-                  <div style={{ position: 'absolute', inset: 0, borderRadius: 8, boxShadow: 'inset 0 0 0 3px #fff, inset 0 0 0 6px var(--c-purple)', pointerEvents: 'none' }} />
-                  <div style={{ position: 'absolute', top: 6, right: 6, width: 22, height: 22, borderRadius: '50%', background: 'var(--c-purple)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,.25)' }}>
+                  <div style={{ position: 'absolute', inset: 0, borderRadius: 8, boxShadow: 'inset 0 0 0 3px #fff, inset 0 0 0 6px var(--c-blue)', pointerEvents: 'none' }} />
+                  <div style={{ position: 'absolute', top: 6, right: 6, width: 22, height: 22, borderRadius: '50%', background: 'var(--c-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,.25)' }}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </div>
                 </>}
@@ -67,11 +67,11 @@ export function TilesQuestion({ question, onAnswer, disabled }) {
                 <div key={i} style={{
                   borderRight: (i % cols < cols-1) ? '1px solid rgba(255,255,255,.25)' : 'none',
                   borderBottom: (i < total - cols) ? '1px solid rgba(255,255,255,.25)' : 'none',
-                  background: sel ? 'rgba(129,67,135,.55)' : 'transparent',
+                  background: sel ? 'rgba(43,98,234,.55)' : 'transparent',
                   position: 'relative', cursor: disabled ? 'default' : 'pointer',
                 }} onClick={() => !disabled && toggle(i)}>
                   {sel && (
-                    <div style={{ position: 'absolute', top: 4, right: 4, width: 18, height: 18, borderRadius: '50%', background: '#fff', color: 'var(--c-purple)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ position: 'absolute', top: 4, right: 4, width: 18, height: 18, borderRadius: '50%', background: '#fff', color: 'var(--c-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </div>
                   )}
@@ -147,12 +147,12 @@ export function SliderQuestion({ question, onAnswer, disabled }) {
   const pieceLeftPct = val * 100
 
   // Цвет дорожки заполнения
-  const trackFill = released ? 'var(--grad)' : 'var(--c-purple)'
+  const trackFill = released ? 'var(--grad)' : 'var(--c-blue)'
 
   return (
     <div style={{ padding: '12px 12px 0' }}>
       {/* Фото с кусочком — натуральные пропорции изображения */}
-      <div style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', background: '#e0dbd4', userSelect: 'none' }}>
+      <div style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', background: '#d4d9e0', userSelect: 'none' }}>
         {publicView.backgroundUrl
           ? <img src={publicView.backgroundUrl} alt="" style={{ width: '100%', height: 'auto', display: 'block' }} />
           : <PlaceholderBg />
@@ -192,7 +192,7 @@ export function SliderQuestion({ question, onAnswer, disabled }) {
           <div style={{
             position: 'absolute', left: 0, top: 0, bottom: 0,
             width: `calc(${val * 100}% + 24px)`,
-            background: `linear-gradient(90deg, rgba(129,67,135,.15), rgba(129,67,135,.06))`,
+            background: `linear-gradient(90deg, rgba(43,98,234,.15), rgba(43,98,234,.06))`,
             borderRadius: 999,
             transition: dragging.current ? 'none' : 'width .05s',
           }} />
@@ -216,9 +216,9 @@ export function SliderQuestion({ question, onAnswer, disabled }) {
               top: 4, bottom: 4,
               left: `calc(${val * 100}% - ${val * 40}px)`,
               width: 40,
-              background: 'var(--grad)',
+              background: 'var(--grad-cta)',
               borderRadius: 999,
-              boxShadow: '0 2px 10px rgba(129,67,135,.45)',
+              boxShadow: '0 2px 10px rgba(43,98,234,.45)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'grab',
               transition: dragging.current ? 'none' : 'left .05s',
@@ -247,8 +247,8 @@ function PuzzlePiece() {
     <svg width="56" height="56" viewBox="0 0 56 56">
       <defs>
         <linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#E77B2E"/>
-          <stop offset="100%" stopColor="#814387"/>
+          <stop offset="0%" stopColor="#15C9A3"/>
+          <stop offset="100%" stopColor="#2B62EA"/>
         </linearGradient>
       </defs>
       {/* puzzle piece shape */}
@@ -260,7 +260,7 @@ function PuzzlePiece() {
 
 function PlaceholderBg() {
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#e8e0f5,#f5e8d8)', flexDirection: 'column', gap: 8 }}>
+    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg,#e0e6f5,#d8f5ef)', flexDirection: 'column', gap: 8 }}>
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" stroke="var(--c-ink-300)" strokeWidth="1.5" rx="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="var(--c-ink-300)"/><path d="M21 16l-5-5-9 9" stroke="var(--c-ink-300)" strokeWidth="1.5"/></svg>
       <span style={{ font: '500 12px/1 var(--font-display)', color: 'var(--c-ink-400)' }}>Загрузите фон в редакторе</span>
     </div>
@@ -312,7 +312,7 @@ export function AudioQuestion({ question, onAnswer, disabled }) {
     <>
       <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
         <audio ref={audioRef} src={publicView.audioUrl} onEnded={handleEnded} />
-        <div style={{ background: 'linear-gradient(135deg, #2a2026 0%, #1d1d2a 100%)', borderRadius: 14, padding: 16, color: '#fff' }}>
+        <div style={{ background: 'linear-gradient(135deg, #20272a 0%, #1d212a 100%)', borderRadius: 14, padding: 16, color: '#fff' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
             <span className="kp-eyebrow" style={{ color: 'rgba(255,255,255,.6)' }}>Аудио</span>
             <span style={{ font: '600 12px/1 var(--font-mono)' }} className="kp-num">{playsLabel}</span>
@@ -322,8 +322,8 @@ export function AudioQuestion({ question, onAnswer, disabled }) {
             <button onClick={togglePlay} disabled={isButtonDisabled}
               style={{ width: 44, height: 44, borderRadius: '50%', background: isButtonDisabled ? 'rgba(255,255,255,.3)' : '#fff', border: 0, cursor: isButtonDisabled ? 'default' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               {playing
-                ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="5" height="16" fill="#1f1f1f" rx="1"/><rect x="14" y="4" width="5" height="16" fill="#1f1f1f" rx="1"/></svg>
-                : <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="#1f1f1f"/></svg>
+                ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="5" height="16" fill="#2F3A4A" rx="1"/><rect x="14" y="4" width="5" height="16" fill="#2F3A4A" rx="1"/></svg>
+                : <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="#2F3A4A"/></svg>
               }
             </button>
             <span style={{ marginLeft: 'auto', font: '500 12px/1 var(--font-display)', color: 'rgba(255,255,255,.6)' }}>
@@ -367,7 +367,7 @@ function WaveformViz({ playing }) {
           width: 3,
           height: `${b * 100}%`,
           borderRadius: 2,
-          background: i < WAVE_BARS.length * 0.5 ? 'var(--c-orange)' : 'rgba(255,255,255,.25)',
+          background: i < WAVE_BARS.length * 0.5 ? 'var(--c-teal)' : 'rgba(255,255,255,.25)',
           transformOrigin: 'center',
           animation: playing ? `waveBar ${0.35 + (i % 6) * 0.07}s ease-in-out ${(i % 9) * 0.04}s infinite` : 'none',
         }} />

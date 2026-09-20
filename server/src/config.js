@@ -11,6 +11,10 @@ const DATA_DIR = process.env.DATA_DIR || './data';
 
 export const config = {
   nodeEnv: process.env.NODE_ENV || 'development',
+  // Тег выложенного образа. Отдаётся в /api/health, и по нему деплой
+  // проверяет, что сайт действительно отдаёт только что собранную версию,
+  // а не пережившую выкладку старую. Подставляется в docker-compose.yml.
+  version: (process.env.APP_VERSION || 'dev').slice(0, 12),
   port: parseInt(process.env.PORT || '3000', 10),
   host: process.env.HOST || '0.0.0.0',
 

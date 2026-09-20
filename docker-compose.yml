@@ -1,5 +1,17 @@
+# Прод-конфигурация «Сириус.Капчи» для captcha.sirius-campus.ru.
+#
+# mem_limit у каждого сервиса — не тюнинг, а защита соседей: на этом VPS
+# в тех же 4 ГБ живут sirius-campus, sirius-eviction, concur, «Старт» и ЛКП.
+# Без потолка один разогнавшийся процесс уронит их все.
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+
 services:
   app:
+    image: ghcr.io/vinotq/captcha-app:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile.server
@@ -10,19 +22,37 @@ services:
       DATA_DIR: /data
       DB_FILE: /data/db.sqlite
       UPLOADS_DIR: /data/uploads
+      # Тег выложенного образа: отдаётся в /api/health, по нему деплой
+      # проверяет, что сайт действительно отдаёт только что собранную версию.
+      APP_VERSION: ${IMAGE_TAG:-dev}
     volumes:
       - ./data:/data
-    ports:
-      - "127.0.0.1:3000:3000"
-    mem_limit: 1g
-    cpus: 0.9
+    # Порт наружу не публикуется вовсе: в приложение ходит только web
+    # по докер-сети. Открытый порт на этой машине — то, чем уже болеют
+    # соседние проекты, см. «Защита периметра» в deploy/SETUP.md.
+    expose:
+      - "3000"
+    # better-sqlite3 и sharp: пересжатие загруженной картинки — самая
+    # дорогая операция, всё остальное укладывается в десятки мегабайт.
+    mem_limit: 512m
+    cpus: 0.8
+    logging: *default-logging
 
   web:
+    image: ghcr.io/vinotq/captcha-web:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile.web
     restart: unless-stopped
+    # TLS терминирует хостовой nginx и проксирует сюда. Только loopback:
+    # 80/443 заняты хостовым nginx, 8080 — sirius-eviction, 8082 — «Старт»,
+    # 8083 — ЛКП. Наш порт 8084.
+    ports:
+      - "127.0.0.1:8084:80"
+    # Только чтение: писать в загрузки имеет право лишь app.
     volumes:
-      - ./web-dist:/var/www/web
+      - ./data/uploads:/var/www/uploads:ro
     depends_on:
       - app
+    mem_limit: 64m
+    logging: *default-logging

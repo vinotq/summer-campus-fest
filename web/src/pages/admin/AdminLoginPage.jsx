@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
         </form>
       </div>
       {/* Branded panel */}
-      <div style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(160deg,#814387 0%,#5a2f60 55%,#E77B2E 110%)', color: '#fff' }}>
+      <div style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(160deg,#2B62EA 0%,#2f3d60 55%,#15C9A3 110%)', color: '#fff' }}>
         <Mark size={520} fill="#fff" style={{ position: 'absolute', right: -120, bottom: -160, opacity: .14 }} />
         <Mark size={170} fill="#fff" style={{ position: 'absolute', left: 40, top: 60, opacity: .22 }} />
       </div>

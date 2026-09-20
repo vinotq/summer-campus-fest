@@ -97,7 +97,7 @@ export function CropModal({ src, fileName, aspect, onConfirm, onCancel }) {
         </div>
 
         {/* Crop area */}
-        <div style={{ flex: 1, overflow: 'auto', padding: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f7f5f1' }}>
+        <div style={{ flex: 1, overflow: 'auto', padding: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F2F4F6' }}>
           <ReactCrop
             crop={crop}
             onChange={c => setCrop(c)}

@@ -8,14 +8,17 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --purple: #814387;
-  --orange: #E77B2E;
-  --dark: #222222;
+  --blue: #2B62EA;
+  --teal: #15C9A3;
+  /* Тёмная бирюза для текста и кнопок на белом: на #15C9A3
+     белое даёт контраст 2.1, в печати это нечитаемо. */
+  --teal-deep: #15977B;
+  --dark: #2F3A4A;
 }
 
 body {
   font-family: 'Onest', sans-serif;
-  background: #f0eaf2;
+  background: #eaecf2;
   padding: 32px;
 }
 
@@ -27,7 +30,7 @@ body {
 .ui-title {
   font-size: 22px;
   font-weight: 800;
-  color: var(--purple);
+  color: var(--blue);
   margin-bottom: 20px;
 }
 
@@ -45,7 +48,7 @@ label {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .07em;
-  color: var(--purple);
+  color: var(--blue);
   margin-bottom: 5px;
 }
 input {
@@ -60,7 +63,7 @@ input {
   color: var(--dark);
   transition: border-color .15s;
 }
-input:focus { border-color: var(--purple); }
+input:focus { border-color: var(--blue); }
 
 .btns {
   display: flex;
@@ -79,9 +82,9 @@ button {
   transition: opacity .15s;
 }
 button:hover { opacity: .82; }
-.btn-add  { background: var(--purple); color: white; }
-.btn-print { background: var(--orange); color: white; }
-.btn-clear { background: white; color: var(--purple); border: 2px solid var(--purple); }
+.btn-add  { background: var(--blue); color: white; }
+.btn-print { background: var(--teal-deep); color: white; }
+.btn-clear { background: white; color: var(--blue); border: 2px solid var(--blue); }
 
 .section-label {
   font-size: 12px;
@@ -106,7 +109,7 @@ button:hover { opacity: .82; }
   height: 425px;
   overflow: hidden;
   border-radius: 10px;
-  box-shadow: 0 10px 40px rgba(129,67,135,.3);
+  box-shadow: 0 10px 40px rgba(43,98,234,.3);
 }
 
 .badge-scaler {
@@ -127,7 +130,7 @@ button:hover { opacity: .82; }
 }
 
 .badge-top {
-  background: var(--purple);
+  background: var(--blue);
   padding: 40px 44px 36px;
   flex-shrink: 0;
   display: flex;
@@ -200,7 +203,7 @@ button:hover { opacity: .82; }
 
 .badge-accent {
   height: 5px;
-  background: linear-gradient(90deg, var(--orange) 0%, #f4a460 100%);
+  background: linear-gradient(90deg, var(--teal) 0%, #60c9f4 100%);
   flex-shrink: 0;
 }
 
@@ -235,7 +238,7 @@ button:hover { opacity: .82; }
 .badge-station-value {
   font-size: 24px;
   font-weight: 600;
-  color: var(--orange);
+  color: var(--teal-deep);
 }
 
 .badge-footer {
@@ -246,7 +249,7 @@ button:hover { opacity: .82; }
 .badge-footer-dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  background: var(--purple);
+  background: var(--blue);
   opacity: .25;
 }
 .badge-footer-dots {
@@ -268,7 +271,7 @@ button:hover { opacity: .82; }
   height: 135px;
   overflow: hidden;
   border-radius: 6px;
-  box-shadow: 0 4px 14px rgba(129,67,135,.25);
+  box-shadow: 0 4px 14px rgba(43,98,234,.25);
 }
 .thumb-scaler {
   width: 566px;
@@ -438,7 +441,7 @@ function badgeHTML(role, name, station) {
       <div class="badge-logo-icon">${signSVG('white', 44, 42)}</div>
       <div class="badge-logo-text">
         <div class="badge-logo-name">КампусФест</div>
-        <div class="badge-logo-sub">Летний</div>
+        <div class="badge-logo-sub">Осенний</div>
       </div>
     </div>
     <div class="badge-role">

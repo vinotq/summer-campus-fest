@@ -1,7 +1,10 @@
 FROM node:20-alpine AS base
 WORKDIR /app
 
-RUN apk add --no-cache python3 make g++
+# python3/make/g++ — сборка нативного better-sqlite3.
+# sqlite — для deploy/backup-db.sh: снять согласованную копию базы
+# простым cp нельзя, она в режиме WAL.
+RUN apk add --no-cache python3 make g++ sqlite
 
 COPY server/package*.json ./server/
 RUN cd server && npm ci --omit=dev

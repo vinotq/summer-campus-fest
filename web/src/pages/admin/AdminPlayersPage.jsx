@@ -4,15 +4,15 @@ import { api } from '../../utils/api.js'
 import { useMobile } from '../../utils/useMobile.js'
 
 const TYPE_COLORS = {
-  grid3x3:   { label: '3×3',      color: '#814387', bg: '#f3eaf8' },
-  tiles:     { label: 'Клетки',   color: '#b55a0e', bg: '#fdf0e6' },
-  slider:    { label: 'Слайдер',  color: '#1f1f1f', bg: '#ebe8e2' },
+  grid3x3:   { label: '3×3',      color: '#2B62EA', bg: '#eaeef8' },
+  tiles:     { label: 'Клетки',   color: '#0a866c', bg: '#e6fdf8' },
+  slider:    { label: 'Слайдер',  color: '#2F3A4A', bg: '#e2e6eb' },
   audio:     { label: 'Аудио',    color: '#2f8a4d', bg: '#e7f4ec' },
-  imageCode: { label: 'Код',      color: '#7a3a14', bg: '#f6e0cc' },
+  imageCode: { label: 'Код',      color: '#0f5c4c', bg: '#ccf6ed' },
 }
 
 function fmtTime(ms) {
-  if (!ms) return '—'
+  if (!ms) return '–'
   if (ms < 60000) return `${(ms/1000).toFixed(1)}с`
   return `${Math.floor(ms/60000)}м ${Math.floor((ms%60000)/1000)}с`
 }
@@ -117,7 +117,7 @@ function PlayerResultModal({ session, onClose, onScoreChanged }) {
                     {/* Save button — only visible when dirty */}
                     {isDirty && (
                       <button onClick={() => saveAnswer(a.id)} disabled={saving[a.id]}
-                        style={{ height: 26, padding: '0 10px', border: 0, borderRadius: 6, background: 'var(--c-purple)', color: '#fff', font: '600 11px/1 var(--font-display)', cursor: 'pointer' }}>
+                        style={{ height: 26, padding: '0 10px', border: 0, borderRadius: 6, background: 'var(--c-blue)', color: '#fff', font: '600 11px/1 var(--font-display)', cursor: 'pointer' }}>
                         {saving[a.id] ? '…' : 'Сохранить'}
                       </button>
                     )}
@@ -234,7 +234,7 @@ export default function AdminPlayersPage() {
               {s.tone === 'live' && <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#c83a3a' }} />}
               <span className="kp-eyebrow" style={{ color: 'var(--c-ink-500)', fontSize: isMobile ? 9 : undefined }}>{s.label}</span>
             </div>
-            <div className="kp-num" style={{ font: `700 ${isMobile ? 18 : 22}px/1 var(--font-display)`, letterSpacing: '-.02em', color: s.tone === 'orange' ? 'var(--c-orange)' : s.tone === 'live' ? 'var(--c-err)' : 'var(--c-ink)' }}>
+            <div className="kp-num" style={{ font: `700 ${isMobile ? 18 : 22}px/1 var(--font-display)`, letterSpacing: '-.02em', color: s.tone === 'orange' ? 'var(--c-teal)' : s.tone === 'live' ? 'var(--c-err)' : 'var(--c-ink)' }}>
               {s.value}
             </div>
           </div>
@@ -242,7 +242,7 @@ export default function AdminPlayersPage() {
       </div>
 
       {/* Grouped list */}
-      <div style={{ flex: 1, overflow: 'auto', background: '#f6f4f0' }}>
+      <div style={{ flex: 1, overflow: 'auto', background: '#F1F3F5' }}>
         {playerGroups.length === 0 && (
           <div style={{ padding: 48, textAlign: 'center', color: 'var(--c-ink-400)', font: '500 14px/1.4 var(--font-display)' }}>
             {search ? 'Ничего не найдено' : 'Игроков пока нет'}
@@ -277,7 +277,7 @@ function PlayerGroup({ group, onViewSession, onToggleVisibility, isMobile }) {
       <div
         onClick={() => setExpanded(e => !e)}
         style={{ display: 'flex', alignItems: 'center', gap: 12, padding: isMobile ? '12px 14px' : '14px 18px', cursor: 'pointer', background: hasLive ? 'rgba(200,58,58,.04)' : '#fff', userSelect: 'none' }}>
-        <div style={{ width: 36, height: 36, borderRadius: '50%', background: hasLive ? 'var(--grad)' : 'var(--c-line-soft)', color: hasLive ? '#fff' : 'var(--c-ink-700)', font: '700 15px/1 var(--font-display)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <div style={{ width: 36, height: 36, borderRadius: '50%', background: hasLive ? 'var(--grad-cta)' : 'var(--c-line-soft)', color: hasLive ? '#fff' : 'var(--c-ink-700)', font: '700 15px/1 var(--font-display)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           {(group.lastName || '?')[0]}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -334,7 +334,7 @@ function PlayerGroup({ group, onViewSession, onToggleVisibility, isMobile }) {
                 </div>
                 <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
                   <button title="Результаты" onClick={() => onViewSession(s)}
-                    style={{ width: 26, height: 26, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: '1px solid var(--c-line)', borderRadius: 6, color: 'var(--c-purple)', cursor: 'pointer' }}>
+                    style={{ width: 26, height: 26, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: '1px solid var(--c-line)', borderRadius: 6, color: 'var(--c-blue)', cursor: 'pointer' }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="currentColor" strokeWidth="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.7"/></svg>
                   </button>
                   <button title={isHidden ? 'Показать' : 'Скрыть'} onClick={() => onToggleVisibility(s)}

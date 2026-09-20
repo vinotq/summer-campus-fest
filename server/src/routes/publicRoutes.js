@@ -1,3 +1,4 @@
+import { config } from '../config.js';
 import { issueSessionCookie, requirePlayer, getSessionId } from '../auth/playerSession.js';
 import * as sessionsRepo from '../db/repo/sessions.js';
 import { startSession, getCurrentQuestion, submitAnswer, buildTopList } from '../game/sessionFlow.js';
@@ -100,6 +101,6 @@ export async function publicRoutes(fastify) {
 
   // GET /api/health — public
   fastify.get('/api/health', async (_request, reply) => {
-    return reply.send({ ok: true, uptime: process.uptime() });
+    return reply.send({ ok: true, uptime: process.uptime(), version: config.version });
   });
 }

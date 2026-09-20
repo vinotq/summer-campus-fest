@@ -3,11 +3,11 @@ import { api } from '../../utils/api.js'
 import { useMobile } from '../../utils/useMobile.js'
 
 const TYPE_LABELS = {
-  grid3x3:   { label: '3×3 фото',  color: 'var(--c-purple)',     bg: 'var(--c-purple-100)' },
-  tiles:     { label: 'Клетки',    color: 'var(--c-orange-700)', bg: 'var(--c-orange-100)' },
-  slider:    { label: 'Слайдер',   color: '#1f1f1f',             bg: '#ebe8e2' },
+  grid3x3:   { label: '3×3 фото',  color: 'var(--c-blue)',     bg: 'var(--c-blue-100)' },
+  tiles:     { label: 'Клетки',    color: 'var(--c-teal-700)', bg: 'var(--c-teal-100)' },
+  slider:    { label: 'Слайдер',   color: '#2F3A4A',             bg: '#e2e6eb' },
   audio:     { label: 'Аудио',     color: '#2f8a4d',             bg: '#e7f4ec' },
-  imageCode: { label: 'Код',       color: '#7a3a14',             bg: '#f6e0cc' },
+  imageCode: { label: 'Код',       color: '#0f5c4c',             bg: '#ccf6ed' },
 }
 const TYPES = Object.keys(TYPE_LABELS)
 
@@ -91,7 +91,7 @@ export default function AdminSettingsPage() {
               const available = allQuestions.filter(q => q.type === type && q.active).length
               const val = counts[type] ?? 0
               return (
-                <div key={type} style={{ padding: '14px 16px', border: '1.5px solid var(--c-line)', borderRadius: 12, background: val > 0 ? meta.bg : '#fafaf8' }}>
+                <div key={type} style={{ padding: '14px 16px', border: '1.5px solid var(--c-line)', borderRadius: 12, background: val > 0 ? meta.bg : '#F8F9FA' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                     <span style={{ height: 20, padding: '0 8px', background: meta.bg, color: meta.color, font: '600 11px/1 var(--font-display)', letterSpacing: '.04em', borderRadius: 5, display: 'inline-flex', alignItems: 'center', textTransform: 'uppercase', border: `1px solid ${meta.color}22` }}>
                       {meta.label}
@@ -145,7 +145,7 @@ export default function AdminSettingsPage() {
             </div>
           ) : (
             <div style={{ padding: '16px 0', font: '500 13px/1.4 var(--font-display)', color: 'var(--c-ink-400)', marginBottom: 12 }}>
-              Нет обязательных вопросов — добавьте из списка ниже
+              Нет обязательных вопросов – добавьте из списка ниже
             </div>
           )}
 
@@ -161,7 +161,7 @@ export default function AdminSettingsPage() {
                       style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', border: '1px solid var(--c-line)', borderRadius: 8, background: '#fff', cursor: 'pointer', textAlign: 'left', opacity: q.active ? 1 : .55 }}>
                       <span style={{ height: 16, padding: '0 5px', background: meta.bg, color: meta.color, font: '600 9px/1 var(--font-display)', borderRadius: 3, display: 'inline-flex', alignItems: 'center', textTransform: 'uppercase', flexShrink: 0 }}>{meta.label}</span>
                       <span style={{ font: '500 12.5px/1 var(--font-display)', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', flex: 1 }}>{q.title}</span>
-                      <span style={{ font: '600 11px/1 var(--font-display)', color: 'var(--c-purple)', flexShrink: 0 }}>+ добавить</span>
+                      <span style={{ font: '600 11px/1 var(--font-display)', color: 'var(--c-blue)', flexShrink: 0 }}>+ добавить</span>
                     </button>
                   )
                 })}

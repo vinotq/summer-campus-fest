@@ -5,11 +5,11 @@ import { CropModal } from '../../components/CropModal.jsx'
 import { useMobile } from '../../utils/useMobile.js'
 
 const TYPE_META = {
-  grid3x3:   { label: '3×3 фото', color: 'var(--c-purple)',     bg: 'var(--c-purple-100)' },
-  tiles:     { label: 'Клетки',   color: 'var(--c-orange-700)', bg: 'var(--c-orange-100)' },
-  slider:    { label: 'Слайдер',  color: '#1f1f1f',             bg: '#ebe8e2' },
+  grid3x3:   { label: '3×3 фото', color: 'var(--c-blue)',     bg: 'var(--c-blue-100)' },
+  tiles:     { label: 'Клетки',   color: 'var(--c-teal-700)', bg: 'var(--c-teal-100)' },
+  slider:    { label: 'Слайдер',  color: '#2F3A4A',             bg: '#e2e6eb' },
   audio:     { label: 'Аудио',    color: '#2f8a4d',             bg: '#e7f4ec' },
-  imageCode: { label: 'Код',      color: '#7a3a14',             bg: '#f6e0cc' },
+  imageCode: { label: 'Код',      color: '#0f5c4c',             bg: '#ccf6ed' },
 }
 
 const DEFAULT_PAYLOADS = {
@@ -131,7 +131,7 @@ function Grid3x3Editor({ payload, onChange }) {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
         {tiles.map((tile, i) => (
-          <div key={i} className="kp-card" style={{ padding: 8, border: tile.correct ? '2px solid var(--c-purple)' : undefined }}>
+          <div key={i} className="kp-card" style={{ padding: 8, border: tile.correct ? '2px solid var(--c-blue)' : undefined }}>
             <div style={{ aspectRatio: '1', background: 'var(--c-line-soft)', borderRadius: 6, overflow: 'hidden', marginBottom: 6, position: 'relative' }}>
               {tile.assetUrl
                 ? <img src={tile.assetUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -140,7 +140,7 @@ function Grid3x3Editor({ payload, onChange }) {
             </div>
             <UploadBtn label="Фото" accept="image/*" preview={null} aspect={1}
               onUploaded={url => setTile(i, { assetUrl: url })} />
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, cursor: 'pointer', font: '600 11px/1 var(--font-display)', color: tile.correct ? 'var(--c-purple)' : 'var(--c-ink-500)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, cursor: 'pointer', font: '600 11px/1 var(--font-display)', color: tile.correct ? 'var(--c-blue)' : 'var(--c-ink-500)' }}>
               <input type="checkbox" checked={tile.correct} onChange={e => setTile(i, { correct: e.target.checked })} />
               Правильный
             </label>
@@ -191,7 +191,7 @@ function TilesEditor({ payload, onChange }) {
               <div key={i} onClick={() => toggleCell(i)} style={{
                 borderRight: i % cols < cols - 1 ? '1px solid rgba(255,255,255,.4)' : 'none',
                 borderBottom: i < total - cols ? '1px solid rgba(255,255,255,.4)' : 'none',
-                background: selected.has(i) ? 'rgba(129,67,135,.55)' : 'rgba(0,0,0,.1)',
+                background: selected.has(i) ? 'rgba(43,98,234,.55)' : 'rgba(0,0,0,.1)',
                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 font: '700 10px/1 var(--font-mono)', color: '#fff',
               }}>
@@ -231,9 +231,9 @@ function SliderEditor({ payload, onChange }) {
         </Field>
       </div>
 
-      <Field label="Правильная позиция — кликните по фото" hint={`x=${target.x.toFixed(2)}, y=${target.y.toFixed(2)}`}>
+      <Field label="Правильная позиция – кликните по фото" hint={`x=${target.x.toFixed(2)}, y=${target.y.toFixed(2)}`}>
         <div ref={imgRef} onClick={handleImageClick}
-          style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', background: '#e0dbd4', maxWidth: 520, cursor: 'crosshair', minHeight: backgroundUrl ? undefined : 80 }}>
+          style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', background: '#d4d9e0', maxWidth: 520, cursor: 'crosshair', minHeight: backgroundUrl ? undefined : 80 }}>
           {backgroundUrl
             ? <img src={backgroundUrl} alt="" style={{ width: '100%', height: 'auto', display: 'block', pointerEvents: 'none' }} />
             : <div style={{ padding: '24px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--c-ink-400)', font: '500 12px/1 var(--font-display)' }}>Загрузите фон, затем кликните для установки цели</div>
@@ -254,9 +254,9 @@ function SliderEditor({ payload, onChange }) {
             transform: 'translate(-50%, -50%)',
             width: `${tolerance * 2 * 100}%`,
             height: 52,
-            border: '1.5px dashed rgba(231,123,46,.8)',
+            border: '1.5px dashed rgba(21,201,163,.8)',
             borderRadius: 6,
-            background: 'rgba(231,123,46,.1)',
+            background: 'rgba(21,201,163,.1)',
             pointerEvents: 'none',
           }} />
 
@@ -489,7 +489,7 @@ function PayloadEditor({ type, payload, onChange }) {
 
 // ── Main page ──────────────────────────────────────────────────────────────
 function fmtElapsed(ms) {
-  if (!ms) return '—'
+  if (!ms) return '–'
   if (ms < 1000) return `${ms}мс`
   return `${(ms / 1000).toFixed(1)}с`
 }
@@ -637,7 +637,7 @@ export default function AdminQuestionsPage() {
         {filtered.map(q => {
           const t = TYPE_META[q.type] || TYPE_META.grid3x3
           return (
-            <div key={q.id} onClick={() => selectQ(q)} style={{ display: 'grid', gridTemplateColumns: '14px 1fr auto', gap: 8, alignItems: 'center', padding: '10px 14px', borderBottom: '1px solid var(--c-line-soft)', background: selected?.id === q.id ? 'var(--c-purple-50)' : 'transparent', borderLeft: selected?.id === q.id ? '3px solid var(--c-purple)' : '3px solid transparent', cursor: 'pointer', opacity: q.active ? 1 : .5 }}>
+            <div key={q.id} onClick={() => selectQ(q)} style={{ display: 'grid', gridTemplateColumns: '14px 1fr auto', gap: 8, alignItems: 'center', padding: '10px 14px', borderBottom: '1px solid var(--c-line-soft)', background: selected?.id === q.id ? 'var(--c-blue-50)' : 'transparent', borderLeft: selected?.id === q.id ? '3px solid var(--c-blue)' : '3px solid transparent', cursor: 'pointer', opacity: q.active ? 1 : .5 }}>
               <svg width="8" height="12" viewBox="0 0 10 14" fill="none">
                 {[3,7,11].map(y => <g key={y}><circle cx="2" cy={y-8} r="1.3" fill="var(--c-ink-300)"/><circle cx="8" cy={y-8} r="1.3" fill="var(--c-ink-300)"/></g>)}
               </svg>
@@ -775,7 +775,7 @@ export default function AdminQuestionsPage() {
         </button>
       </div>
 
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '340px 1fr', overflow: 'hidden', background: '#f6f4f0' }}>
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '340px 1fr', overflow: 'hidden', background: '#F1F3F5' }}>
         <div style={{ borderRight: '1px solid var(--c-line)', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
           <QuestionList />
         </div>

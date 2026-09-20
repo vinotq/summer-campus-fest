@@ -32,7 +32,7 @@ function printCert({ lastName, firstName, totalScore, rank, today }) {
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Сертификат — ${escHtml(lastName)} ${escHtml(firstName)}</title>
+<title>Сертификат – ${escHtml(lastName)} ${escHtml(firstName)}</title>
 <style>
   @page { size: A4 landscape; margin: 0; }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,13 +45,13 @@ function printCert({ lastName, firstName, totalScore, rank, today }) {
   .cert {
     width: 297mm; height: 210mm;
     position: relative;
-    background: linear-gradient(145deg, #1c0e24 0%, #2e1640 45%, #3f2050 70%, #2a1428 100%);
+    background: linear-gradient(145deg, #0e241f 0%, #163440 45%, #202e50 70%, #141d2a 100%);
     font-family: 'Helvetica Neue', Arial, sans-serif;
     overflow: hidden;
   }
   .stripe {
     position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
-    background: linear-gradient(180deg, #E77B2E 0%, #814387 100%);
+    background: linear-gradient(180deg, #15C9A3 0%, #2B62EA 100%);
   }
   .inner {
     position: absolute; inset: 0 0 0 8px;
@@ -61,19 +61,19 @@ function printCert({ lastName, firstName, totalScore, rank, today }) {
   .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .logo { display: inline-flex; align-items: center; gap: 10px; }
   .logo-text { font: 700 20px/1 'Helvetica Neue', Arial, sans-serif; color: #fff; letter-spacing: -.02em; }
-  .logo-dot { color: #E77B2E; }
+  .logo-dot { color: #15C9A3; }
   .cert-label { font: 600 11px/1 monospace; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.5); }
   .main { display: grid; grid-template-columns: 1fr 150px; gap: 24px; align-items: center; }
   .confirmed { font: 500 11px/1 sans-serif; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 14px; }
   .name-last { font: 800 64px/.88 sans-serif; letter-spacing: -.03em; color: #fff; margin-bottom: 8px; }
-  .name-first { font: 800 64px/.88 sans-serif; letter-spacing: -.03em; color: #E77B2E; }
+  .name-first { font: 800 64px/.88 sans-serif; letter-spacing: -.03em; color: #15C9A3; }
   .tagline { margin-top: 18px; font: 400 13px/1.5 sans-serif; color: rgba(255,255,255,.6); max-width: 380px; }
   .badge { display: flex; align-items: center; justify-content: center; width: 140px; height: 140px; border-radius: 50%; border: 2px dashed rgba(255,255,255,.35); font: 700 13px/1.45 sans-serif; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.65); text-align: center; align-self: center; }
   .footer { border-top: 1px solid rgba(255,255,255,.12); padding-top: 14px; display: flex; align-items: flex-end; gap: 40px; }
   .stat-label { font: 600 10px/1 sans-serif; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 6px; }
   .stat-big { font: 800 72px/.85 sans-serif; letter-spacing: -.04em; color: #fff; }
   .stat-sub { font: 500 11px/1 sans-serif; color: rgba(255,255,255,.55); margin-top: 5px; }
-  .rank-big { font: 800 52px/.85 sans-serif; letter-spacing: -.04em; color: #E77B2E; }
+  .rank-big { font: 800 52px/.85 sans-serif; letter-spacing: -.04em; color: #15C9A3; }
   .footer-mark { margin-left: auto; opacity: .3; align-self: flex-end; }
   @media screen {
     body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #111; }
@@ -83,7 +83,7 @@ function printCert({ lastName, firstName, totalScore, rank, today }) {
 </head>
 <body>
 <div class="cert">
-  <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E77B2E"/><stop offset="100%" stop-color="#814387"/></linearGradient></defs></svg>
+  <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#15C9A3"/><stop offset="100%" stop-color="#2B62EA"/></linearGradient></defs></svg>
   <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none">${fieldMarks}</div>
   ${bigWatermark}
   <div class="stripe"></div>
@@ -95,7 +95,7 @@ function printCert({ lastName, firstName, totalScore, rank, today }) {
     <div class="main">
       <div>
         <div class="confirmed">Подтверждено, что</div>
-        <div class="name-last">${escHtml(lastName || '—')}</div>
+        <div class="name-last">${escHtml(lastName || '–')}</div>
         <div class="name-first">${escHtml(firstName || '')}</div>
         <div class="tagline">является студентом, а не ботом, и достоин жить в общежитии Кампуса Сириуса.</div>
       </div>
@@ -183,13 +183,13 @@ export default function ResultPage() {
         aspectRatio: '297 / 210',
         position: 'relative',
         overflow: 'hidden',
-        background: 'linear-gradient(145deg, #1c0e24 0%, #2e1640 45%, #3f2050 70%, #2a1428 100%)',
+        background: 'linear-gradient(145deg, #0e241f 0%, #163440 45%, #202e50 70%, #141d2a 100%)',
         boxSizing: 'border-box',
         flexShrink: 0,
       }}>
         <MarkField count={14} opacity={.055} color="#fff" />
         <Mark size={280} fill="#fff" style={{ position: 'absolute', right: -40, top: -70, opacity: .07, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 5, background: 'linear-gradient(180deg, #E77B2E 0%, #814387 100%)' }} />
+        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 5, background: 'linear-gradient(180deg, #15C9A3 0%, #2B62EA 100%)' }} />
         <div style={{ position: 'absolute', inset: '0 0 0 5px', display: 'grid', gridTemplateRows: 'auto 1fr auto', padding: '16px 20px 14px 22px', gap: 0, boxSizing: 'border-box' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
             <Logo size={15} dark />
@@ -198,8 +198,8 @@ export default function ResultPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px', gap: 12, alignItems: 'center' }}>
             <div>
               <div style={{ font: '500 7px/1 var(--font-display)', letterSpacing: '.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,.45)', marginBottom: 8 }}>Подтверждено, что</div>
-              <div style={{ font: '800 26px/.88 var(--font-display)', letterSpacing: '-.03em', color: '#fff', marginBottom: 4 }}>{data.lastName || '—'}</div>
-              <div style={{ font: '800 26px/.88 var(--font-display)', letterSpacing: '-.03em', color: '#E77B2E' }}>{data.firstName || ''}</div>
+              <div style={{ font: '800 26px/.88 var(--font-display)', letterSpacing: '-.03em', color: '#fff', marginBottom: 4 }}>{data.lastName || '–'}</div>
+              <div style={{ font: '800 26px/.88 var(--font-display)', letterSpacing: '-.03em', color: '#15C9A3' }}>{data.firstName || ''}</div>
               <div style={{ marginTop: 10, font: '400 9px/1.45 var(--font-display)', color: 'rgba(255,255,255,.6)', maxWidth: 260 }}>
                 является студентом, а не ботом, и достоин жить в общежитии Кампуса Сириуса.
               </div>
@@ -217,7 +217,7 @@ export default function ResultPage() {
             {data.rank && (
               <div>
                 <div style={{ font: '600 6px/1 var(--font-display)', letterSpacing: '.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,.45)', marginBottom: 4 }}>Место</div>
-                <div style={{ font: '800 26px/.85 var(--font-display)', letterSpacing: '-.04em', color: '#E77B2E' }}>{data.rank}</div>
+                <div style={{ font: '800 26px/.85 var(--font-display)', letterSpacing: '-.04em', color: '#15C9A3' }}>{data.rank}</div>
                 <div style={{ font: '500 7px/1 var(--font-display)', color: 'rgba(255,255,255,.45)', marginTop: 3 }}>топ‑10</div>
               </div>
             )}
@@ -234,16 +234,16 @@ export default function ResultPage() {
         return (
           <div style={{ margin: '12px 16px 0', display: 'flex', flexDirection: 'column', gap: 8 }}>
             {beatSelf && (
-              <div style={{ padding: '10px 14px', background: 'linear-gradient(90deg, rgba(129,67,135,.1), rgba(129,67,135,.05))', border: '1px solid rgba(129,67,135,.3)', borderRadius: 10 }}>
-                <div style={{ font: '600 11px/1 var(--font-display)', color: 'var(--c-purple)', marginBottom: 4 }}>Личный рекорд побит</div>
+              <div style={{ padding: '10px 14px', background: 'linear-gradient(90deg, rgba(43,98,234,.1), rgba(43,98,234,.05))', border: '1px solid rgba(43,98,234,.3)', borderRadius: 10 }}>
+                <div style={{ font: '600 11px/1 var(--font-display)', color: 'var(--c-blue)', marginBottom: 4 }}>Личный рекорд побит</div>
                 <div style={{ font: '500 12px/1 var(--font-display)', color: 'var(--c-ink-500)' }}>
                   Прошлый лучший: <span className="kp-num" style={{ font: '600 12px/1 var(--font-mono)', color: 'var(--c-ink-400)' }}>{beatSelf.totalScore} б</span>
                 </div>
               </div>
             )}
             {others.length > 0 && (
-              <div style={{ padding: '10px 14px', background: 'linear-gradient(90deg, rgba(231,123,46,.1), rgba(129,67,135,.08))', border: '1px solid rgba(231,123,46,.3)', borderRadius: 10 }}>
-                <div style={{ font: '600 11px/1 var(--font-display)', color: 'var(--c-orange)', marginBottom: 7 }}>Вы опередили</div>
+              <div style={{ padding: '10px 14px', background: 'linear-gradient(90deg, rgba(21,201,163,.1), rgba(43,98,234,.08))', border: '1px solid rgba(21,201,163,.3)', borderRadius: 10 }}>
+                <div style={{ font: '600 11px/1 var(--font-display)', color: 'var(--c-teal)', marginBottom: 7 }}>Вы опередили</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   {others.map((p, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -286,11 +286,11 @@ export default function ResultPage() {
             {history.attempts.map((attempt) => {
               const isCurrent = attempt.sessionId === (data.sessionId ?? null)
               return (
-                <div key={attempt.sessionId} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 8, background: isCurrent ? 'var(--c-purple-50)' : 'var(--c-bg)', border: `1px solid ${isCurrent ? 'var(--c-purple)' : 'var(--c-line-soft)'}` }}>
+                <div key={attempt.sessionId} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 8, background: isCurrent ? 'var(--c-blue-50)' : 'var(--c-bg)', border: `1px solid ${isCurrent ? 'var(--c-blue)' : 'var(--c-line-soft)'}` }}>
                   <span style={{ font: '700 11px/1 var(--font-mono)', color: 'var(--c-ink-400)', minWidth: 16 }}>{attempt.index}</span>
                   <div style={{ flex: 1 }}>
                     <div className="kp-num" style={{ font: '700 16px/1 var(--font-display)', color: 'var(--c-ink)' }}>{attempt.totalScore} <span style={{ font: '500 11px/1', color: 'var(--c-ink-400)' }}>баллов</span></div>
-                    {attempt.rank && <div style={{ font: '500 10px/1 var(--font-display)', color: 'var(--c-orange)', marginTop: 3 }}>#{attempt.rank} в топе</div>}
+                    {attempt.rank && <div style={{ font: '500 10px/1 var(--font-display)', color: 'var(--c-teal)', marginTop: 3 }}>#{attempt.rank} в топе</div>}
                   </div>
                   <button
                     onClick={() => printCert({ lastName: history.lastName, firstName: history.firstName, totalScore: attempt.totalScore, rank: attempt.rank, today })}
@@ -311,7 +311,7 @@ export default function ResultPage() {
         )}
 
         {confirmReplay ? (
-          <div style={{ padding: '14px 16px', background: 'var(--c-purple-50)', border: '1.5px solid var(--c-purple)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ padding: '14px 16px', background: 'var(--c-blue-50)', border: '1.5px solid var(--c-blue)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
             <div style={{ font: '600 13px/1.4 var(--font-display)', color: 'var(--c-ink)' }}>
               Запустить новую игру?
               {history && (

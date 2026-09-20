@@ -3,7 +3,7 @@
 Детали верстки и компонентов — за фронт-командой. Здесь описаны роуты, назначение и связь с API/realtime. Все контракты эндпоинтов — в `04-rest-api.md`, событий — в `05-realtime.md`, payload капч — в `03-question-types.md`.
 
 ## Стек фронта (рекомендация)
-React + Vite (JS), TailwindCSS, Zustand, react-router-dom, socket.io-client. Шрифт **Onest**, цвета: фиолетовый `#814387`, оранжевый `#E77B2E`, тёмно-серый `#414141`. Логотипы — `brand/`.
+React + Vite (JS), TailwindCSS, Zustand, react-router-dom, socket.io-client. Шрифт **Onest**, цвета: синий `#2B62EA`, бирюзовый `#15C9A3`, тёмно-синий `#2F3A4A`. Логотипы — `brand/`.
 
 ---
 

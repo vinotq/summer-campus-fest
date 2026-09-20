@@ -1,24 +1,77 @@
-name: Deploy
+name: deploy
 
+# Сборка на GitHub отключена: Actions на приватных репозиториях недоступны
+# из-за биллинга («recent account payments have failed»). Выкладка идёт
+# с ноутбука: rsync конфигов на VPS, затем deploy/remote-deploy.sh по месту.
+# Образы собираются на VPS — Vite укладывается в секунды и двух ядер хватает.
+#
+# Вернуть автоматическую сборку, когда починится биллинг: раскомментировать
+# `push` ниже. Всё остальное в workflow рабочее.
 on:
-  push:
-    branches: [main]
+#  push:
+#    branches: [main]
+  workflow_dispatch:
+
+# Два одновременных деплоя подерутся за один каталог и за базу.
+concurrency:
+  group: deploy-captcha
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASS }}
-          script: |
-            cd /opt/summer-campus-fest
-            git pull
-            docker compose build
-            docker compose up -d
-            cp sirius-campus.nginx.conf /etc/nginx/sites-available/sirius-campus.ru
-            nginx -t && systemctl reload nginx
+      - uses: actions/checkout@v4
+
+      - name: setup ssh
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          for v in VPS_HOST VPS_USER VPS_SSH_KEY; do
+            if [ -z "${!v}" ]; then
+              echo "::error::secret $v is empty or not set (Settings > Secrets and variables > Actions)"
+              exit 1
+            fi
+          done
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+
+      - name: rsync to vps
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+        run: |
+          # .env и data исключены намеренно: первый заводится на машине руками
+          # и в git не хранится, во втором живут база и загрузки к вопросам —
+          # --delete снёс бы их вместе с результатами игроков.
+          rsync -az --delete \
+            --exclude '.git' \
+            --exclude 'node_modules' \
+            --exclude 'web/dist' \
+            --exclude '.env' \
+            --exclude 'data' \
+            --exclude '*.zip' \
+            -e "ssh -p ${VPS_PORT:-22} -i ~/.ssh/id_deploy -o StrictHostKeyChecking=accept-new" \
+            ./ "$VPS_USER@$VPS_HOST:/opt/captcha/"
+
+      - name: deploy on vps
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Скрипт запускается ПО ПУТИ на VPS (его туда кладёт rsync шагом
+          # выше), а не подаётся в `bash -s` через stdin: внутри есть
+          # `docker compose exec -T`, а он вычитывает stdin до конца и
+          # проглатывает весь непрочитанный хвост скрипта. Деплой тогда
+          # выходит с кодом 0, не сделав ни сборки, ни подъёма контейнеров.
+          ssh -p "${VPS_PORT:-22}" -i ~/.ssh/id_deploy \
+            -o StrictHostKeyChecking=accept-new \
+            "$VPS_USER@$VPS_HOST" \
+            "IMAGE_TAG='$IMAGE_TAG' LOCAL_IMAGES=1 bash /opt/captcha/deploy/remote-deploy.sh" < /dev/null

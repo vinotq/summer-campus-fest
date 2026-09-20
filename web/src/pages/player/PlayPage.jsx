@@ -182,7 +182,7 @@ export default function PlayPage() {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
         }}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#76e08b', flexShrink: 0 }} />
-          Прочитайте вопрос — {Math.ceil(delayLeft / 1000)}с
+          Прочитайте вопрос – {Math.ceil(delayLeft / 1000)}с
         </div>
       )}
 
@@ -196,10 +196,10 @@ export default function PlayPage() {
 
       {/* Score toast overlay */}
       {toast && (
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10, background: 'rgba(247,245,241,.6)', backdropFilter: 'blur(4px)' }}>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10, background: 'rgba(242,244,246,.6)', backdropFilter: 'blur(4px)' }}>
           <div style={{ background: '#fff', borderRadius: 20, padding: '28px 28px 24px', boxShadow: 'var(--shadow-pop)', border: '1px solid var(--c-line)', width: 280, textAlign: 'center' }}>
             <Mark size={40} style={{ marginBottom: 8 }} />
-            <div style={{ font: '800 64px/.95 var(--font-display)', letterSpacing: '-.04em', background: 'var(--grad)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
+            <div style={{ font: '800 64px/.95 var(--font-display)', letterSpacing: '-.04em', background: 'var(--grad-cta)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
               +{toast.score}
             </div>
             <div style={{ font: '600 13px/1 var(--font-display)', color: 'var(--c-ink-500)', marginTop: 2 }}>баллов</div>

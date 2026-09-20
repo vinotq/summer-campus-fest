@@ -53,23 +53,30 @@ cd web && npm install && npm run dev
 
 ## Деплой
 
-Скопировать `.env.example` в `.env`, задать пароль администратора:
+Стенд живёт на `captcha.sirius-campus.ru`. Первичная настройка машины —
+[`deploy/SETUP.md`](deploy/SETUP.md), устройство — [`docs/10-deployment.md`](docs/10-deployment.md).
+
+Выкладка с ноутбука:
+
+```bash
+./deploy/push.sh
+```
+
+Скрипт шлёт каталог на VPS (минуя `.env` и `data/`), собирает образы на месте,
+поднимает контейнеры, раскладывает vhost хостового nginx и проверяет, что
+домен отдаёт именно эту сборку.
+
+Локально:
 
 ```bash
 cp .env.example .env
-
-# Сгенерировать хэш пароля
 docker compose run --rm app node /app/server/scripts/hash-password.js 'мой_пароль'
-# Вставить результат в .env как ADMIN_PASSWORD_HASH
-```
-
-Запустить:
-
-```bash
+# вставить результат в .env как ADMIN_PASSWORD_HASH
 docker compose up -d --build
 ```
 
-Nginx слушает порт `80`. Статика фронта и `/uploads/` отдаются напрямую, `/api/*` и `/socket.io/*` проксируются на `app:3000`.
+Фронт и `/uploads/` раздаёт nginx внутри контейнера `web`, `/api/*` и
+`/socket.io/*` он же проксирует на `app:3000`.
 
 ## Переменные окружения
 
@@ -77,3 +84,8 @@ Nginx слушает порт `80`. Статика фронта и `/uploads/` �
 
 - `ADMIN_LOGIN` / `ADMIN_PASSWORD_HASH` — учётные данные администратора
 - `COOKIE_SECRET` — случайная строка 32+ символов для подписи cookie
+
+## Документация
+
+Вся в [`docs/`](docs/) — одиннадцать файлов от обзора до деплоя,
+начинать с [`docs/00-overview.md`](docs/00-overview.md).

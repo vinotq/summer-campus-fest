@@ -40,7 +40,7 @@ export default function StartPage() {
         <Mark size={64} style={{ marginBottom: 12 }} />
         <h1 style={{ margin: 0, font: '700 38px/.95 var(--font-display)', letterSpacing: '-.035em', color: 'var(--c-ink)' }}>
           Подтвердите,<br />что вы не<br />
-          <span style={{ background: 'var(--grad)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>бот-студент</span>
+          <span style={{ background: 'var(--grad-cta)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>бот-студент</span>
         </h1>
       </div>
 

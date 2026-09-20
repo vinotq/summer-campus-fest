@@ -25,7 +25,7 @@ campus-fest-summer/
 ├── Dockerfile.web
 ├── nginx.conf
 ├── .env.example
-├── arch/                  # ← эта документация
+├── docs/                  # ← эта документация
 ├── data/                  # volume (БД + аплоады), не в git
 │   ├── db.sqlite
 │   └── uploads/

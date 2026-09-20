@@ -10,9 +10,12 @@ export function Mark({ size = 24, fill = 'gradient', style }) {
       aria-hidden="true">
       {useGrad && (
         <defs>
-          <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#E77B2E" />
-            <stop offset="100%" stopColor="#814387" />
+          {/* Координаты и точки — из brand/autumn/Знак_КампусФест.svg,
+              чтобы знак в интерфейсе заливался ровно так же, как в макетах. */}
+          <linearGradient id={id} x1="18" y1="14" x2="200" y2="196" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#15C9A3" />
+            <stop offset="0.52" stopColor="#1B9FD6" />
+            <stop offset="1" stopColor="#2B62EA" />
           </linearGradient>
         </defs>
       )}
@@ -26,14 +29,14 @@ export function Logo({ size = 28, dark = false }) {
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
       <Mark size={size} />
-      <span style={{ font: `700 ${Math.round(size * 0.7)}px/1 'Onest', sans-serif`, letterSpacing: '-.02em', color: dark ? '#fff' : '#1f1f1f' }}>
-        Сириус<span style={{ color: dark ? '#E77B2E' : '#814387' }}>.</span>Капча
+      <span style={{ font: `700 ${Math.round(size * 0.7)}px/1 'Onest', sans-serif`, letterSpacing: '-.02em', color: dark ? '#fff' : '#2F3A4A' }}>
+        Сириус<span style={{ color: dark ? '#15C9A3' : '#2B62EA' }}>.</span>Капча
       </span>
     </span>
   )
 }
 
-export function MarkField({ count = 28, opacity = 0.08, color = '#814387', style }) {
+export function MarkField({ count = 28, opacity = 0.08, color = '#2B62EA', style }) {
   const rng = (i) => { const x = Math.sin(i * 9301 + 49297) * 233280; return x - Math.floor(x) }
   const items = Array.from({ length: count }, (_, i) => ({
     x: rng(i * 2) * 100, y: rng(i * 2 + 1) * 100,

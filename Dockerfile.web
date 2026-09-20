@@ -7,7 +7,11 @@ RUN cd web && npm ci
 COPY web ./web
 RUN cd web && npm run build
 
-FROM alpine AS final
-WORKDIR /out
-COPY --from=build /app/web/dist ./
-CMD ["sh", "-c", "cp -r /out/. /var/www/web/ && echo 'Frontend deployed' && tail -f /dev/null"]
+# Раньше здесь был alpine, который копировал сборку в общий том, а раздавал её
+# хостовой nginx из /opt/.../web-dist. Теперь статику раздаёт nginx внутри
+# образа: выложенная сборка и раздающий её сервер едут одним слоем, и «на диске
+# лежит новый билд, а отдаётся старый» стать не может.
+FROM nginx:1.27-alpine AS final
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/web/dist /var/www/web
+EXPOSE 80
