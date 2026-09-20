@@ -89,7 +89,7 @@ function printCert({ lastName, firstName, totalScore, rank, today }) {
   <div class="stripe"></div>
   <div class="inner">
     <div class="top-bar">
-      <div class="logo">${logoMark}<span class="logo-text">Сириус<span class="logo-dot">.</span>Капча</span></div>
+      <div class="logo">${logoMark}<span class="logo-text">Кампус<span class="logo-dot">.</span>Капча</span></div>
       <span class="cert-label">Сертификат · ${today}</span>
     </div>
     <div class="main">

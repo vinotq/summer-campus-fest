@@ -1,4 +1,4 @@
-# Прод-конфигурация «Сириус.Капчи» для captcha.sirius-campus.ru.
+# Прод-конфигурация «Кампус.Капчи» для captcha.sirius-campus.ru.
 #
 # mem_limit у каждого сервиса — не тюнинг, а защита соседей: на этом VPS
 # в тех же 4 ГБ живут sirius-campus, sirius-eviction, concur, «Старт» и ЛКП.

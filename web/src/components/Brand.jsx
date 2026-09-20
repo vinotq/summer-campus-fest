@@ -30,7 +30,7 @@ export function Logo({ size = 28, dark = false }) {
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
       <Mark size={size} />
       <span style={{ font: `700 ${Math.round(size * 0.7)}px/1 'Onest', sans-serif`, letterSpacing: '-.02em', color: dark ? '#fff' : '#2F3A4A' }}>
-        Сириус<span style={{ color: dark ? '#15C9A3' : '#2B62EA' }}>.</span>Капча
+        Кампус<span style={{ color: dark ? '#15C9A3' : '#2B62EA' }}>.</span>Капча
       </span>
     </span>
   )

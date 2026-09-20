@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<style>
+@font-face { font-family:'Stapel Expanded'; src:url('fonts/Stapel-ExpandedBlack.ttf') format('truetype'); font-weight:900; font-display:block; }
+@font-face { font-family:'Stapel Expanded'; src:url('fonts/Stapel-ExpandedExtraBold.ttf') format('truetype'); font-weight:800; font-display:block; }
+@font-face { font-family:'Stapel'; src:url('fonts/Stapel-ExtraBold.ttf') format('truetype'); font-weight:800; font-display:block; }
+@font-face { font-family:'Stapel'; src:url('fonts/Stapel-Bold.ttf') format('truetype'); font-weight:700; font-display:block; }
+@font-face { font-family:'Stapel Text'; src:url('fonts/StapelText-Bold.ttf') format('truetype'); font-weight:700; font-display:block; }
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+.poster {
+  width:1080px; height:1920px; background:#fff;
+  padding:58px 44px 44px; display:flex; flex-direction:column;
+  font-family:'Stapel', sans-serif; -webkit-font-smoothing:antialiased;
+}
+
+/* ── Шапка ── */
+.head { text-align:center; flex-shrink:0; }
+.head h1 {
+  font-family:'Stapel Expanded', sans-serif; font-weight:900;
+  text-transform:uppercase; line-height:.94; letter-spacing:-.015em;
+  white-space:nowrap;
+}
+.l1 { font-size:46px; color:#1B3C6E; }
+.l1 em { font-style:normal; color:#E03A2D; }
+.l2 { font-size:68px; color:#141414; margin-top:2px; }
+.sub {
+  font-family:'Stapel', sans-serif; font-weight:800; font-size:26px;
+  text-transform:uppercase; color:#141414; margin-top:16px;
+}
+
+/* ── Сетка ── */
+.grid { flex:1; display:flex; flex-direction:column; gap:20px; margin:30px 0 26px; }
+.row  { flex:1; display:flex; gap:20px; justify-content:center; }
+.card {
+  --bg:#ccc; width:316px; background:var(--bg);
+  border:4px solid #141414; border-radius:30px;
+  padding:22px 16px 20px; position:relative;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  box-shadow:0 6px 0 rgba(20,20,20,.18);
+}
+.num {
+  position:absolute; top:-4px; left:-4px; width:56px; height:56px;
+  background:#fff; color:#141414; border:4px solid #141414;
+  border-radius:26px 0 22px 0;
+  font-family:'Stapel Expanded', sans-serif; font-weight:900; font-size:25px;
+  display:flex; align-items:center; justify-content:center;
+}
+/* Иконка в блоке фиксированной высоты: так она стоит на одном уровне во
+   всех карточках, независимо от того, в одну заголовок строку или в две. */
+.icw { height:180px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.ic  { width:172px; height:172px; }
+.card h3 {
+  font-family:'Stapel', sans-serif; font-weight:800;
+  font-size:31px; line-height:1; text-transform:uppercase;
+  margin-top:8px; letter-spacing:-.01em; white-space:nowrap;
+}
+.card p {
+  font-family:'Stapel Text', sans-serif; font-weight:700;
+  font-size:18px; line-height:1.28; margin-top:11px; max-width:264px;
+}
+.card.dark  h3 { color:#141414; }
+.card.dark  p  { color:#141414; opacity:.84; }
+.card.light h3 { color:#fff; }
+.card.light p  { color:#fff; opacity:.94; }
+
+/* ── Подвал ── */
+.foot { flex-shrink:0; display:flex; justify-content:center; align-items:center; }
+.foot svg { width:360px; height:auto; display:block; }
+</style></head>
+<body data-fit="pending">
+<div class="poster">
+
+  <header class="head">
+    <h1 class="l1">Выбери свою <em>категорию</em></h1>
+    <h1 class="l2">И начни игру!</h1>
+    <div class="sub">Подходи, выбирай и будь в игре!</div>
+  </header>
+
+  <main class="grid">
+<div class="row r3">
+      <article class="card dark" style="--bg:#2BA9D1">
+        <span class="num">1</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><rect x="22" y="30" width="56" height="52" rx="10" fill="#E8843C"/>
+<path d="M36 30V24a14 14 0 0 1 28 0v6" fill="none"/>
+<rect x="30" y="52" width="40" height="30" rx="6" fill="#F6C89A"/>
+<rect x="42" y="52" width="16" height="13" rx="3" fill="#fff"/>
+<rect x="14" y="62" width="12" height="24" rx="4" fill="#4FC3E8"/>
+<path d="M78 58l10-4 4 10-10 4z" fill="#F5D93B"/>
+<path d="M88 54l6-2 2 5-6 2z" fill="#fff"/></g></svg></div>
+        <h3>Школьные<br>вопросы</h3>
+        <p>Вопросы из школьной программы — от лёгких до каверзных</p>
+      </article>
+      <article class="card dark" style="--bg:#5FB94A">
+        <span class="num">2</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><rect x="12" y="18" width="76" height="64" rx="12" fill="#fff"/>
+<g text-anchor="middle" font-family="Stapel" font-weight="800" font-size="27" stroke="none">
+  <text x="31" y="48" fill="#1565C0">1</text>
+  <text x="50" y="48" fill="#E03A2D">2</text>
+  <text x="69" y="48" fill="#2E7D32">3</text>
+</g>
+<path d="M24 65h14M31 58v14" stroke-width="4.5" fill="none"/>
+<path d="M44 59l12 12M56 59L44 71" stroke-width="4.5" fill="none"/>
+<path d="M62 65h14" stroke-width="4.5" fill="none"/>
+<circle cx="69" cy="58" r="2.8" fill="#141414" stroke="none"/>
+<circle cx="69" cy="72" r="2.8" fill="#141414" stroke="none"/></g></svg></div>
+        <h3>Математика</h3>
+        <p>Примеры и задачи: посчитай и выбери верный ответ</p>
+      </article>
+      <article class="card light" style="--bg:#CE3226">
+        <span class="num">3</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M50 16v14" fill="none"/>
+<circle cx="50" cy="14" r="5" fill="#F5D93B"/>
+<path d="M22 30h56" fill="none"/>
+<path d="M22 30L10 56h24z" fill="#4FC3E8"/>
+<path d="M78 30L66 56h24z" fill="#4FC3E8"/>
+<path d="M10 56a12 12 0 0 0 24 0" fill="none"/>
+<path d="M66 56a12 12 0 0 0 24 0" fill="none"/>
+<rect x="40" y="30" width="20" height="44" rx="4" fill="#E8843C"/>
+<rect x="28" y="74" width="44" height="12" rx="5" fill="#fff"/></g></svg></div>
+        <h3>Обществознание</h3>
+        <p>Право, экономика и устройство общества</p>
+      </article></div>
+<div class="row r2">
+      <article class="card dark" style="--bg:#F08119">
+        <span class="num">4</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M32 20h36v20a18 18 0 0 1-36 0z" fill="#F5D93B"/>
+<path d="M32 24H20a10 10 0 0 0 12 12" fill="none"/>
+<path d="M68 24h12a10 10 0 0 1-12 12" fill="none"/>
+<rect x="44" y="58" width="12" height="12" fill="#E8843C"/>
+<rect x="32" y="70" width="36" height="12" rx="4" fill="#4FC3E8"/>
+<path d="M40 82h20" fill="none"/></g></svg></div>
+        <h3>Спорт</h3>
+        <p>Виды спорта, рекорды и знаменитые спортсмены</p>
+      </article>
+      <article class="card light" style="--bg:#8E4B9E">
+        <span class="num">5</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><rect x="16" y="38" width="52" height="42" rx="6" fill="#37474F"/>
+<path d="M16 38l52-10 4 12-52 10z" fill="#546E7A"/>
+<path d="M28 30l6 12M42 27l6 12M56 24l6 12" stroke-width="4" fill="none"/>
+<path d="M72 50h18l-4 32H76z" fill="#fff"/>
+<path d="M72 50h18" fill="none"/>
+<circle cx="78" cy="44" r="6" fill="#E03A2D"/>
+<circle cx="88" cy="46" r="5" fill="#F5D93B"/></g></svg></div>
+        <h3>Кино</h3>
+        <p>Угадай фильм по кадру, цитате и саундтреку</p>
+      </article></div>
+<div class="row r3">
+      <article class="card dark" style="--bg:#F5CE2A">
+        <span class="num">6</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M50 14a22 22 0 0 1 13 40v8H37v-8A22 22 0 0 1 50 14z" fill="#F5D93B"/>
+<rect x="37" y="66" width="26" height="8" rx="3" fill="#fff"/>
+<rect x="40" y="78" width="20" height="7" rx="3" fill="#fff"/>
+<path d="M50 34v18" stroke-width="4" fill="none"/>
+<path d="M14 26h14v8a5 5 0 0 0 0 10v8H14z" fill="#E03A2D"/>
+<path d="M86 60H72v-8a5 5 0 0 1 0-10v-8h14z" fill="#4FC3E8"/></g></svg></div>
+        <h3>Логика</h3>
+        <p>Головоломки и задачи на сообразительность</p>
+      </article>
+      <article class="card dark" style="--bg:#1FAFA6">
+        <span class="num">7</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><circle cx="42" cy="52" r="26" fill="#fff"/>
+<path d="M42 36l12 9-5 14H35l-5-14z" fill="#1A1A1A" stroke="none"/>
+<path d="M42 26v10M20 46l10 6M64 46l-10 6M30 72l5-13M54 72l-5-13" stroke-width="3" fill="none"/>
+<path d="M72 24h20v52H72" fill="none"/>
+<path d="M76 30h12M76 40h12M76 50h12M76 60h12M82 26v48" stroke-width="2" fill="none"/></g></svg></div>
+        <h3>Футбол</h3>
+        <p>Клубы, игроки и легендарные матчи</p>
+      </article>
+      <article class="card dark" style="--bg:#E6457F">
+        <span class="num">8</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M26 18h44a6 6 0 0 1 6 6v58H26a6 6 0 0 1-6-6V24a6 6 0 0 1 6-6z" fill="#E6457F"/>
+<path d="M26 74h50" fill="none"/>
+<path d="M34 18v56" stroke-width="3" fill="none"/>
+<path d="M56 30l5 11 12 2-9 8 2 12-10-6-10 6 2-12-9-8 12-2z" fill="#F5D93B"/>
+<circle cx="84" cy="66" r="12" fill="#fff"/>
+<path d="M84 58v8l5 4" stroke-width="3" fill="none"/></g></svg></div>
+        <h3>Рекорды<br>Гиннесса</h3>
+        <p>Самые невероятные рекорды планеты</p>
+      </article></div>
+<div class="row r2">
+      <article class="card dark" style="--bg:#8CBE3F">
+        <span class="num">9</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M30 40a14 14 0 0 1 8-26 14 14 0 0 1 24 0 14 14 0 0 1 8 26z" fill="#fff"/>
+<rect x="30" y="40" width="40" height="12" rx="4" fill="#fff"/>
+<path d="M38 44v6M50 44v6M62 44v6" stroke-width="3" fill="none"/>
+<ellipse cx="50" cy="70" rx="28" ry="12" fill="#E8843C"/>
+<ellipse cx="50" cy="67" rx="20" ry="7" fill="#F6C89A"/>
+<path d="M78 66h16" stroke-width="5" fill="none"/></g></svg></div>
+        <h3>Кухня<br>и блюда</h3>
+        <p>Блюда и рецепты кухонь со всего мира</p>
+      </article>
+      <article class="card light" style="--bg:#1B3C6E">
+        <span class="num">10</span>
+        <div class="icw"><svg class="ic" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#141414" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M18 24h28a8 8 0 0 1 8 8v48a8 8 0 0 0-8-6H18z" fill="#fff"/>
+<path d="M82 24H54a8 8 0 0 0-8 8v48a8 8 0 0 1 8-6h28z" fill="#EDEDED"/>
+<path d="M50 32v42" stroke-width="3" fill="none"/>
+<path d="M26 40h18M26 50h18M56 40h18M56 50h18" stroke-width="3" fill="none"/>
+<path d="M74 70c8-14 16-20 22-22-2 8-8 18-22 24z" fill="#F5D93B"/>
+<path d="M70 82l10-10" stroke-width="4" fill="none"/></g></svg></div>
+        <h3>Литература</h3>
+        <p>Авторы, книги и герои русской и мировой классики</p>
+      </article></div>
+  </main>
+
+  <footer class="foot">
+    <svg viewBox="65 251 501 127" xmlns="http://www.w3.org/2000/svg"><path d="M87.8336 290.064H86.2574C67.7885 290.064 65 280.661 65 274.971V273.801C65 268.07 67.5056 258.91 86.2574 258.91H87.8336C106.1 258.91 108.768 267.183 108.768 271.057V271.581H96.8458C96.6033 270.774 95.6738 266.981 86.9445 266.981C78.6597 266.981 76.8816 270.653 76.8816 274.003V274.487C76.8816 277.715 78.9022 281.953 86.9849 281.953C95.8354 281.953 96.7245 277.715 96.8862 277.029H108.768V277.675C108.768 281.589 105.939 290.064 87.8336 290.064ZM122.808 289.499V267.667H109.836V259.475H147.258V267.667H134.286V289.499H122.808ZM189.034 259.475L173.677 282.679C170.242 287.845 168.868 289.499 162.199 289.499H156.178V281.468H161.472C162.28 281.468 162.523 281.226 162.523 280.782V280.742C162.523 280.379 162.361 279.935 161.997 279.491L147.206 259.475H160.502L169.353 272.509L177.355 259.475H189.034ZM184.724 281.509H188.684C190.422 278.2 190.786 272.711 190.786 259.475H225.743V281.509H230.592V294.745H219.802V289.499H195.514V294.745H184.724V281.509ZM199.312 281.509H214.265V267.465H201.131C201.131 273.478 200.606 278.966 199.312 281.509ZM232.715 259.475H265.976V266.819H244.031V270.572H265.531V277.877H244.031V281.993H266.299V289.499H232.715V259.475ZM269.259 289.499V259.475H280.736V270.088H299.528V259.475H310.965V289.499H299.528V278.079H280.736V289.499H269.259ZM339.702 289.499V279.087C337.56 279.531 334.57 279.895 330.205 279.895C319.172 279.895 313.393 277.07 313.393 267.99V259.475H324.87V266.537C324.87 271.097 327.82 271.904 332.993 271.904C335.257 271.904 337.762 271.743 339.702 271.299V259.475H351.139V289.499H339.702ZM354.903 259.475H388.163V266.819H366.219V270.572H387.719V277.877H366.219V281.993H388.487V289.499H354.903V259.475ZM413.352 290.064H411.775C393.306 290.064 390.518 280.661 390.518 274.971V273.801C390.518 268.07 393.024 258.91 411.775 258.91H413.352C431.618 258.91 434.286 267.183 434.286 271.057V271.581H422.364C422.121 270.774 421.192 266.981 412.462 266.981C404.178 266.981 402.4 270.653 402.4 274.003V274.487C402.4 277.715 404.42 281.953 412.503 281.953C421.353 281.953 422.243 277.715 422.404 277.029H434.286V277.675C434.286 281.589 431.457 290.064 413.352 290.064ZM462.822 289.499L448.152 276.061V289.499H436.674V259.475H448.152V271.339L462.943 259.475H477.209L459.71 273.115L477.775 289.499H462.822ZM509.057 289.499V270.653L490.184 289.499H478.707V259.475H490.184V278.361L509.057 259.475H520.535V289.499H509.057ZM554.523 289.499V270.653L535.649 289.499H524.172V259.475H535.649V278.361L554.523 259.475H566V289.499H554.523ZM546.157 257.941H544.54C536.66 257.941 535.407 253.22 535.407 251.081V251H542.803C542.803 251.484 543.166 252.977 545.389 252.977C547.571 252.977 547.895 251.484 547.895 251H555.169V251.081C555.169 253.22 553.351 257.941 546.157 257.941ZM117.496 376.936L89.8674 351.627V376.936H68.2516V320.39H89.8674V342.735L117.724 320.39H144.592L111.635 346.079L145.658 376.936H117.496ZM195.192 353.679L185.678 334.222L176.392 353.679H195.192ZM206.533 376.936L202.118 367.816H169.77L165.432 376.936H143.512L171.521 320.39H200.596L230.203 376.936H206.533ZM232.151 376.936V320.39H261.835L279.188 352.159L296.846 320.39H325.312V376.936H303.924V341.671L284.059 376.936H273.023L253.233 341.671V376.936H232.151ZM331.968 376.936V320.39H407.928V376.936H386.388V335.438H353.584V376.936H331.968ZM488.522 320.39L459.599 364.091C453.131 373.82 450.543 376.936 437.984 376.936H426.644V361.811H436.614C438.136 361.811 438.592 361.355 438.592 360.519V360.443C438.592 359.759 438.288 358.923 437.604 358.087L409.747 320.39H434.787L451.456 344.939L466.526 320.39H488.522ZM526.562 378H523.593C488.81 378 483.558 360.291 483.558 349.575V347.371C483.558 336.578 488.277 319.326 523.593 319.326H526.562C560.964 319.326 565.988 334.906 565.988 342.203V343.191H543.534C543.078 341.671 541.328 334.526 524.887 334.526C509.284 334.526 505.935 341.443 505.935 347.751V348.663C505.935 354.743 509.74 362.723 524.963 362.723C541.632 362.723 543.306 354.743 543.611 353.451H565.988V354.667C565.988 362.039 560.66 378 526.562 378Z" fill="#222222"/></svg>
+  </footer>
+
+</div>
+
+<script>
+// Подгонка кегля под ширину контейнера.
+//
+// Обязательно ПОСЛЕ document.fonts.ready: до загрузки Stapel строки меряются
+// подменным шрифтом, он заметно уже, замер показывает «всё влезает», а потом
+// подъезжает настоящий — и заголовки вылезают за карточки. Ровно это и
+// случилось на первом прогоне.
+// Ширина самой длинной строки. Не scrollWidth: у блочного элемента он равен
+// clientWidth, пока текст влезает, поэтому сравнение с запасом по бокам
+// всегда срабатывало и кегль уезжал в минимум. Range меряет именно текст,
+// а при переносах через <br> отдаёт габарит самой широкой строки.
+function textWidth(el) {
+  const r = document.createRange();
+  r.selectNodeContents(el);
+  return r.getBoundingClientRect().width;
+}
+
+function fit(el, start, min, limit) {
+  let size = start;
+  el.style.fontSize = size + 'px';
+  while (size > min && textWidth(el) > limit) {
+    size -= 0.5;
+    el.style.fontSize = size + 'px';
+  }
+  return size;
+}
+
+// Доступная ширина берётся у родителя, а не у самого заголовка: карточка —
+// flex-колонка с align-items:center, её дети ужимаются по содержимому, и
+// clientWidth заголовка равен ширине его же текста. Сравнение с ним всегда
+// давало «не влезает» и загоняло кегль в минимум.
+function innerWidth(el) {
+  const cs = getComputedStyle(el);
+  return el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+}
+
+document.fonts.ready.then(() => {
+  const report = [];
+  document.querySelectorAll('.l1, .l2').forEach(el => {
+    const s0 = parseFloat(getComputedStyle(el).fontSize);
+    report.push(el.className + ':' + fit(el, s0, 20, innerWidth(el.parentElement) - 8));
+  });
+  document.querySelectorAll('.card h3').forEach(el => {
+    const s0 = parseFloat(getComputedStyle(el).fontSize);
+    const limit = innerWidth(el.closest('.card')) - 14;
+    report.push(el.textContent.trim().replace(/\s+/g, '').slice(0, 10) + ':' + fit(el, s0, 13, limit));
+  });
+  document.body.setAttribute('data-fit', report.join(' | '));
+});
+</script>
+</body></html>
