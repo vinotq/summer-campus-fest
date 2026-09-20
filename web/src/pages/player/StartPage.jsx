@@ -12,7 +12,7 @@ export default function StartPage() {
 
   async function handleStart(e) {
     e.preventDefault()
-    if (!lastName.trim() || !firstName.trim()) { setError('Введите фамилию и имя'); return }
+    if (!lastName.trim() || !firstName.trim()) { setError('Введите фамилию с именем и команду'); return }
     setLoading(true); setError('')
     try {
       await api.start({ lastName: lastName.trim(), firstName: firstName.trim() })
@@ -20,7 +20,7 @@ export default function StartPage() {
     } catch (err) {
       if (err.code === 'conflict') { navigate('/play', { replace: true }); return }
       if (err.code === 'max_attempts') {
-        setError('Вы уже прошли квиз 3 раза под этим именем. Результаты учтены!')
+        setError('Вы уже прошли квиз 3 раза под этими данными. Результаты учтены!')
         setLoading(false)
         return
       }
@@ -45,10 +45,10 @@ export default function StartPage() {
       </div>
 
       <form onSubmit={handleStart} style={{ padding: '24px 16px 0', display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <label style={{ font: '600 12px/1 var(--font-display)', color: 'var(--c-ink-700)' }}>Фамилия</label>
-        <input className="kp-input" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Иванов" />
-        <label style={{ font: '600 12px/1 var(--font-display)', color: 'var(--c-ink-700)', marginTop: 4 }}>Имя</label>
-        <input className="kp-input" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="Пётр" />
+        <label style={{ font: '600 12px/1 var(--font-display)', color: 'var(--c-ink-700)' }}>Фамилия и Имя</label>
+        <input className="kp-input" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Иванов Пётр" />
+        <label style={{ font: '600 12px/1 var(--font-display)', color: 'var(--c-ink-700)', marginTop: 4 }}>Команда</label>
+        <input className="kp-input" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="Название команды" />
         {error && <p style={{ margin: 0, color: 'var(--c-err)', font: '500 13px/1.3 var(--font-display)' }}>{error}</p>}
         <div style={{ marginTop: 'auto' }} />
       </form>
@@ -61,7 +61,7 @@ export default function StartPage() {
         </button>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 12, font: '500 11px/1.2 var(--font-display)', color: 'var(--c-ink-400)' }}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
-          До 3 попыток на одно имя
+          До 3 попыток на участника
         </div>
       </div>
     </div>

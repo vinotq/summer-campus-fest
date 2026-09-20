@@ -17,6 +17,34 @@ function fmtTime(ms) {
   return `${Math.floor(ms/60000)}м ${Math.floor((ms%60000)/1000)}с`
 }
 
+const NO_TEAM = 'Без команды'
+
+function teamOf(session) {
+  return (session.firstName || '').trim() || NO_TEAM
+}
+
+function bestScoreOf(list) {
+  return Math.max(...list.filter(s => s.finishedAt).map(s => s.totalScore), 0)
+}
+
+function groupByPlayer(list) {
+  const map = new Map()
+  list.forEach(s => {
+    const key = `${s.lastName}__${s.firstName}`
+    if (!map.has(key)) map.set(key, { lastName: s.lastName, firstName: s.firstName, sessions: [] })
+    map.get(key).sessions.push(s)
+  })
+  return Array.from(map.values())
+    .sort((a, b) => bestScoreOf(b.sessions) - bestScoreOf(a.sessions) || a.lastName.localeCompare(b.lastName, 'ru'))
+}
+
+function plural(n, one, few, many) {
+  const n10 = n % 10, n100 = n % 100
+  if (n10 === 1 && n100 !== 11) return one
+  if (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return few
+  return many
+}
+
 function PlayerResultModal({ session, onClose, onScoreChanged }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -61,7 +89,10 @@ function PlayerResultModal({ session, onClose, onScoreChanged }) {
         {/* Header */}
         <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--c-line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <div style={{ font: '700 17px/1 var(--font-display)' }}>{session.lastName} {session.firstName}</div>
+            <div style={{ font: '700 17px/1 var(--font-display)' }}>{session.lastName}</div>
+            {session.firstName && (
+              <div style={{ marginTop: 4, font: '600 11px/1 var(--font-display)', color: 'var(--c-blue)' }}>{session.firstName}</div>
+            )}
             {data && (
               <div style={{ marginTop: 5, font: '500 12px/1 var(--font-display)', color: 'var(--c-ink-500)' }}>
                 Итого: <b className="kp-num" style={{ color: 'var(--c-ink)', fontSize: 15 }}>{data.session.totalScore}</b> баллов
@@ -141,6 +172,7 @@ export default function AdminPlayersPage() {
   const [clearing, setClearing] = useState(false)
   const [confirmClear, setConfirmClear] = useState(false)
   const [viewSession, setViewSession] = useState(null)
+  const [groupMode, setGroupMode] = useState('team') // 'team' | 'player'
   const isMobile = useMobile()
 
   function handleScoreChanged(sessionId, newTotal) {
@@ -165,28 +197,40 @@ export default function AdminPlayersPage() {
     useAdminStore.getState().setSessionVisibility(session.id, hidden)
   }
 
-  // Group sessions by player name
-  const playerGroups = (() => {
+  const query = search.trim().toLowerCase()
+  const filteredSessions = query
+    ? sessions.filter(s => `${s.lastName} ${s.firstName}`.toLowerCase().includes(query))
+    : sessions
+
+  // Одна карточка на связку «Фамилия Имя» + «Команда»
+  const playerGroups = groupByPlayer(filteredSessions)
+
+  // Команды берутся из поля «Команда», внутри — игроки этой команды
+  const teamGroups = (() => {
     const map = new Map()
-    sessions.forEach(s => {
-      if (search) {
-        const q = search.toLowerCase()
-        if (!(s.lastName + ' ' + s.firstName).toLowerCase().includes(q)) return
-      }
-      const key = `${s.lastName}__${s.firstName}`
-      if (!map.has(key)) map.set(key, { lastName: s.lastName, firstName: s.firstName, sessions: [] })
+    filteredSessions.forEach(s => {
+      const team = teamOf(s)
+      const key = team.toLowerCase()
+      if (!map.has(key)) map.set(key, { team, sessions: [] })
       map.get(key).sessions.push(s)
     })
     return Array.from(map.values())
+      .map(t => {
+        const players = groupByPlayer(t.sessions)
+        return { ...t, players, score: players.reduce((sum, p) => sum + bestScoreOf(p.sessions), 0) }
+      })
+      .sort((a, b) => b.score - a.score || b.players.length - a.players.length || a.team.localeCompare(b.team, 'ru'))
   })()
 
   const uniquePlayers = new Set(sessions.map(s => `${s.lastName}__${s.firstName}`)).size
+  const uniqueTeams = new Set(sessions.map(s => teamOf(s).toLowerCase())).size
   const live = sessions.filter(s => !s.finishedAt).length
   const finished = sessions.filter(s => s.finishedAt).length
   const scores = sessions.filter(s => s.finishedAt && !s.hiddenFromDashboard).map(s => s.totalScore)
   const bestScore = scores.length ? Math.max(...scores) : 0
 
   const stats = [
+    { label: 'Команд', value: uniqueTeams },
     { label: 'Игроков', value: uniquePlayers },
     { label: 'Попыток', value: sessions.length },
     { label: 'Играют', value: live, tone: 'live' },
@@ -220,14 +264,28 @@ export default function AdminPlayersPage() {
             </button>
           )}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 12px', height: 36, border: '1px solid var(--c-line)', borderRadius: 8, background: '#fff', font: '500 13px/1 var(--font-display)', color: 'var(--c-ink-500)' }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.7"/><path d="M21 21l-4.3-4.3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Поиск по имени…" style={{ border: 0, outline: 'none', font: 'inherit', color: 'inherit', background: 'transparent', width: '100%' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8, padding: '0 12px', height: 36, border: '1px solid var(--c-line)', borderRadius: 8, background: '#fff', font: '500 13px/1 var(--font-display)', color: 'var(--c-ink-500)' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.7"/><path d="M21 21l-4.3-4.3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Поиск по имени или команде…" style={{ border: 0, outline: 'none', font: 'inherit', color: 'inherit', background: 'transparent', width: '100%' }} />
+          </div>
+          <div style={{ display: 'flex', gap: 2, padding: 2, background: 'var(--c-line-soft)', borderRadius: 8, flexShrink: 0 }}>
+            {[['team', 'Команды'], ['player', 'Игроки']].map(([mode, label]) => (
+              <button key={mode} onClick={() => setGroupMode(mode)}
+                style={{ height: 32, padding: isMobile ? '0 8px' : '0 12px', border: 0, borderRadius: 6, cursor: 'pointer',
+                  background: groupMode === mode ? '#fff' : 'transparent',
+                  color: groupMode === mode ? 'var(--c-ink)' : 'var(--c-ink-500)',
+                  font: `${groupMode === mode ? 700 : 600} 11px/1 var(--font-display)`,
+                  boxShadow: groupMode === mode ? '0 1px 2px rgba(0,0,0,.08)' : 'none' }}>
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Stats strip */}
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3,1fr)' : 'repeat(5,1fr)', gap: 1, background: 'var(--c-line)', borderBottom: '1px solid var(--c-line)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3,1fr)' : 'repeat(6,1fr)', gap: 1, background: 'var(--c-line)', borderBottom: '1px solid var(--c-line)' }}>
         {stats.map(s => (
           <div key={s.label} style={{ background: '#fff', padding: isMobile ? '10px 12px' : '14px 18px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 3 }}>
@@ -249,30 +307,42 @@ export default function AdminPlayersPage() {
           </div>
         )}
         <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 8 : 10, padding: isMobile ? '10px 12px' : '16px 20px' }}>
-          {playerGroups.map(group => (
-            <PlayerGroup
-              key={`${group.lastName}__${group.firstName}`}
-              group={group}
-              onViewSession={setViewSession}
-              onToggleVisibility={toggleVisibility}
-              isMobile={isMobile}
-            />
-          ))}
+          {groupMode === 'team'
+            ? teamGroups.map(team => (
+                <TeamGroup
+                  key={team.team.toLowerCase()}
+                  team={team}
+                  onViewSession={setViewSession}
+                  onToggleVisibility={toggleVisibility}
+                  isMobile={isMobile}
+                />
+              ))
+            : playerGroups.map(group => (
+                <PlayerGroup
+                  key={`${group.lastName}__${group.firstName}`}
+                  group={group}
+                  onViewSession={setViewSession}
+                  onToggleVisibility={toggleVisibility}
+                  isMobile={isMobile}
+                />
+              ))}
         </div>
       </div>
     </>
   )
 }
 
-function PlayerGroup({ group, onViewSession, onToggleVisibility, isMobile }) {
-  const [expanded, setExpanded] = useState(true)
+function PlayerGroup({ group, onViewSession, onToggleVisibility, isMobile, nested = false }) {
+  const [expanded, setExpanded] = useState(!nested)
   const { sessions } = group
   const bestScore = Math.max(...sessions.filter(s => s.finishedAt).map(s => s.totalScore), 0)
   const hasLive = sessions.some(s => !s.finishedAt)
   const allHidden = sessions.every(s => s.hiddenFromDashboard)
 
   return (
-    <div style={{ background: '#fff', borderRadius: 12, border: '1px solid var(--c-line)', overflow: 'hidden' }}>
+    <div style={nested
+      ? { background: '#fff', borderTop: '1px solid var(--c-line-soft)', overflow: 'hidden' }
+      : { background: '#fff', borderRadius: 12, border: '1px solid var(--c-line)', overflow: 'hidden' }}>
       {/* Player header row */}
       <div
         onClick={() => setExpanded(e => !e)}
@@ -281,10 +351,15 @@ function PlayerGroup({ group, onViewSession, onToggleVisibility, isMobile }) {
           {(group.lastName || '?')[0]}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ font: '700 15px/1.1 var(--font-display)', color: 'var(--c-ink)' }}>{group.lastName} {group.firstName}</div>
+          <div style={{ font: '700 15px/1.1 var(--font-display)', color: 'var(--c-ink)' }}>{group.lastName}</div>
           <div style={{ marginTop: 4, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+            {!nested && (
+              <span style={{ height: 16, padding: '0 6px', display: 'inline-flex', alignItems: 'center', borderRadius: 4, background: 'var(--c-blue-50, #eaeef8)', color: 'var(--c-blue)', font: '600 10px/1 var(--font-display)' }}>
+                {teamOf(group)}
+              </span>
+            )}
             <span style={{ font: '500 11px/1 var(--font-display)', color: 'var(--c-ink-400)' }}>
-              {sessions.length} {sessions.length === 1 ? 'попытка' : sessions.length <= 4 ? 'попытки' : 'попыток'}
+              {sessions.length} {plural(sessions.length, 'попытка', 'попытки', 'попыток')}
             </span>
             {hasLive && (
               <span style={{ display: 'flex', alignItems: 'center', gap: 4, font: '600 10px/1 var(--font-display)', color: '#c83a3a' }}>
@@ -348,6 +423,65 @@ function PlayerGroup({ group, onViewSession, onToggleVisibility, isMobile }) {
               </div>
             )
           })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function TeamGroup({ team, onViewSession, onToggleVisibility, isMobile }) {
+  const [expanded, setExpanded] = useState(true)
+  const { players, sessions } = { players: team.players, sessions: team.sessions }
+  const hasLive = sessions.some(s => !s.finishedAt)
+
+  return (
+    <div style={{ background: '#fff', borderRadius: 12, border: '1px solid var(--c-line)', overflow: 'hidden' }}>
+      {/* Team header row */}
+      <div
+        onClick={() => setExpanded(e => !e)}
+        style={{ display: 'flex', alignItems: 'center', gap: 12, padding: isMobile ? '12px 14px' : '14px 18px', cursor: 'pointer', background: hasLive ? 'rgba(200,58,58,.04)' : 'var(--c-line-soft)', userSelect: 'none' }}>
+        <div style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--grad-cta)', color: '#fff', font: '700 14px/1 var(--font-display)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          {(team.team || '?')[0].toUpperCase()}
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ font: '700 16px/1.1 var(--font-display)', color: 'var(--c-ink)', letterSpacing: '-.01em' }}>{team.team}</div>
+          <div style={{ marginTop: 4, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+            <span style={{ font: '500 11px/1 var(--font-display)', color: 'var(--c-ink-400)' }}>
+              {players.length} {plural(players.length, 'игрок', 'игрока', 'игроков')} · {sessions.length} {plural(sessions.length, 'попытка', 'попытки', 'попыток')}
+            </span>
+            {hasLive && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4, font: '600 10px/1 var(--font-display)', color: '#c83a3a' }}>
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#c83a3a' }} />играет
+              </span>
+            )}
+          </div>
+        </div>
+        {team.score > 0 && (
+          <div style={{ textAlign: 'right' }}>
+            <div className="kp-num" style={{ font: '800 22px/1 var(--font-display)', color: 'var(--c-ink)', letterSpacing: '-.03em' }}>
+              {team.score}
+            </div>
+            <div style={{ marginTop: 3, font: '500 9px/1 var(--font-display)', color: 'var(--c-ink-400)', textTransform: 'uppercase', letterSpacing: '.08em' }}>сумма лучших</div>
+          </div>
+        )}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform .15s', color: 'var(--c-ink-400)' }}>
+          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
+
+      {/* Players of the team */}
+      {expanded && (
+        <div>
+          {players.map(group => (
+            <PlayerGroup
+              key={`${group.lastName}__${group.firstName}`}
+              group={group}
+              onViewSession={onViewSession}
+              onToggleVisibility={onToggleVisibility}
+              isMobile={isMobile}
+              nested
+            />
+          ))}
         </div>
       )}
     </div>

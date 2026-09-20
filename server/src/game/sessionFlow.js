@@ -24,13 +24,20 @@ function shuffle(arr) {
   return a;
 }
 
-export function buildTopList() {
-  return sessionsRepo.listTopBest(10).map((s, i) => ({
+// Дашборд показывает всех участников, а не только десятку
+export function buildTopList(limit = 500) {
+  return sessionsRepo.listTopBest(limit).map((s, i) => ({
     rank: i + 1,
-    name: `${s.last_name} ${s.first_name}`,
+    name: s.last_name,   // «Фамилия Имя»
+    team: s.first_name,  // «Команда»
     totalScore: s.total_score,
     finishedAt: s.finished_at,
   }));
+}
+
+// Тот же путь, что и при завершении игры: используется после очистки игроков
+export function emitTop() {
+  emitDashboard('top:update', { top: buildTopList() });
 }
 
 export function buildSessionPublic(session) {
@@ -186,7 +193,8 @@ function buildFinishedResult(session) {
 
   const overtaken = rank
     ? top.slice(rankIdx + 1).map(s => ({
-        name: `${s.last_name} ${s.first_name}`,
+        name: s.last_name,
+        team: s.first_name,
         totalScore: s.total_score,
       }))
     : [];

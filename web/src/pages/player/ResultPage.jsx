@@ -228,7 +228,7 @@ export default function ResultPage() {
 
       {/* ── Overtaken ── */}
       {data.overtaken && data.overtaken.length > 0 && (() => {
-        const myName = `${data.lastName} ${data.firstName}`
+        const myName = data.lastName
         const beatSelf = data.overtaken.find(p => p.name === myName)
         const others = data.overtaken.filter(p => p.name !== myName)
         return (
@@ -247,7 +247,9 @@ export default function ResultPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   {others.map((p, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ font: '500 12px/1 var(--font-display)', color: 'var(--c-ink-700)' }}>{p.name}</span>
+                      <span style={{ font: '500 12px/1 var(--font-display)', color: 'var(--c-ink-700)' }}>
+                        {p.name}{p.team ? <span style={{ color: 'var(--c-ink-400)' }}> · {p.team}</span> : null}
+                      </span>
                       <span className="kp-num" style={{ font: '600 12px/1 var(--font-mono)', color: 'var(--c-ink-400)' }}>{p.totalScore} б</span>
                     </div>
                   ))}

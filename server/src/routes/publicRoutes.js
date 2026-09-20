@@ -13,16 +13,16 @@ export async function publicRoutes(fastify) {
     const { lastName, firstName, fingerprint } = request.body ?? {};
 
     if (!lastName || typeof lastName !== 'string' || lastName.trim().length === 0 || lastName.length > 64) {
-      return reply.code(400).send({ error: 'validation', message: 'Фамилия обязательна (до 64 символов)' });
+      return reply.code(400).send({ error: 'validation', message: 'Фамилия и имя обязательны (до 64 символов)' });
     }
     if (!firstName || typeof firstName !== 'string' || firstName.trim().length === 0 || firstName.length > 64) {
-      return reply.code(400).send({ error: 'validation', message: 'Имя обязательно (до 64 символов)' });
+      return reply.code(400).send({ error: 'validation', message: 'Команда обязательна (до 64 символов)' });
     }
 
     // Max attempts check
     const attempts = sessionsRepo.countFinishedByName(lastName.trim(), firstName.trim());
     if (attempts >= 3) {
-      return reply.code(409).send({ error: 'max_attempts', message: 'Вы уже прошли квиз 3 раза под этим именем' });
+      return reply.code(409).send({ error: 'max_attempts', message: 'Вы уже прошли квиз 3 раза под этими данными' });
     }
 
     // Conflict: already has an ACTIVE (not finished) session

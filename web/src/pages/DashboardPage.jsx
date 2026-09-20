@@ -3,11 +3,13 @@ import { Logo, Mark, MarkField } from '../components/Brand.jsx'
 import { api } from '../utils/api.js'
 import { getDashboardSocket, disconnectDashboard } from '../utils/socket.js'
 
+const PAGE_SIZE = 10        // максимум строк на экран
+const PAGE_INTERVAL = 12000 // мс до перелистывания
+
 export default function DashboardPage() {
   const [top, setTop] = useState([])
-  const [liveCount, setLiveCount] = useState(0)
-  const [totalCount, setTotalCount] = useState(0)
   const [qrHidden, setQrHidden] = useState(false)
+  const [page, setPage] = useState(0)
 
   useEffect(() => {
     api.dashboardTop().then(r => setTop(r.top))
@@ -18,6 +20,18 @@ export default function DashboardPage() {
   }, [])
 
   const maxScore = top[0]?.totalScore || 1
+  const pageCount = Math.max(1, Math.ceil(top.length / PAGE_SIZE))
+  // Страницы одинаковой длины: 12 участников — это 6 + 6, а не 10 + 2
+  const perPage = Math.ceil(top.length / pageCount) || PAGE_SIZE
+  const safePage = Math.min(page, pageCount - 1)
+  const rows = top.slice(safePage * perPage, safePage * perPage + perPage)
+
+  // Участников больше экрана — листаем по кругу
+  useEffect(() => {
+    if (pageCount <= 1) return   // safePage уже держит индекс в границах
+    const timer = setInterval(() => setPage(p => (p + 1) % pageCount), PAGE_INTERVAL)
+    return () => clearInterval(timer)
+  }, [pageCount])
 
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100vh', background: 'linear-gradient(160deg,#101a18 0%,#1a282e 50%,#0f121a 100%)', color: '#fff', overflow: 'hidden', fontFamily: 'var(--font-display)' }}>
@@ -27,10 +41,6 @@ export default function DashboardPage() {
       {/* Header */}
       <div style={{ position: 'absolute', left: 64, right: 64, top: 48, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Logo size={48} dark />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
-          <Stat label="Играют сейчас" value={String(liveCount || top.length)} live />
-          <Stat label="Завершили" value={String(totalCount || top.length)} />
-        </div>
       </div>
 
       {/* Title */}
@@ -41,11 +51,25 @@ export default function DashboardPage() {
       </div>
 
       {/* Leaderboard */}
-      <div style={{ position: 'absolute', right: 64, top: 140, width: 820, display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {top.map((row) => <LeaderRow key={row.sessionId} row={row} maxScore={maxScore} />)}
-        {top.length === 0 && (
-          <div style={{ padding: 40, textAlign: 'center', color: 'rgba(255,255,255,.4)', font: '600 18px/1 var(--font-display)' }}>
-            Результатов пока нет – будь первым!
+      <div style={{ position: 'absolute', right: 64, top: 140, bottom: 48, width: 820, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
+          {rows.map((row) => <LeaderRow key={`${row.rank}-${row.name}`} row={row} maxScore={maxScore} />)}
+          {top.length === 0 && (
+            <div style={{ padding: 40, textAlign: 'center', color: 'rgba(255,255,255,.4)', font: '600 18px/1 var(--font-display)' }}>
+              Результатов пока нет – будь первым!
+            </div>
+          )}
+        </div>
+        {pageCount > 1 && (
+          <div style={{ paddingTop: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              {Array.from({ length: pageCount }, (_, i) => (
+                <span key={i} style={{ width: i === safePage ? 26 : 9, height: 9, borderRadius: 999, background: i === safePage ? '#15C9A3' : 'rgba(255,255,255,.22)', transition: 'width .3s' }} />
+              ))}
+            </div>
+            <span style={{ font: '600 15px/1 var(--font-display)', color: 'rgba(255,255,255,.4)' }}>
+              {top.length} участников
+            </span>
           </div>
         )}
       </div>
@@ -79,31 +103,21 @@ export default function DashboardPage() {
   )
 }
 
-function Stat({ label, value, live }) {
-  return (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: '600 12px/1 var(--font-display)', letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,.55)', marginBottom: 4 }}>
-        {live && <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ff5a5a', boxShadow: '0 0 8px #ff5a5a' }} />}
-        {label}
-      </div>
-      <div className="kp-num" style={{ font: '800 32px/1 var(--font-display)', letterSpacing: '-.03em', color: '#fff' }}>{value}</div>
-    </div>
-  )
-}
-
 function LeaderRow({ row, maxScore }) {
   const isTop3 = row.rank <= 3
   const fillPct = (row.totalScore / maxScore) * 100
   return (
-    <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '72px 1fr auto 72px', alignItems: 'center', gap: 20, padding: '16px 24px', borderRadius: 12, background: row.isNew ? 'linear-gradient(90deg,rgba(21,201,163,.18),rgba(43,98,234,.18))' : 'rgba(255,255,255,.04)', border: row.isNew ? '1px solid rgba(21,201,163,.5)' : '1px solid rgba(255,255,255,.06)', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '88px 1fr 120px', alignItems: 'center', gap: 20, padding: '14px 24px', borderRadius: 12, background: row.isNew ? 'linear-gradient(90deg,rgba(21,201,163,.18),rgba(43,98,234,.18))' : 'rgba(255,255,255,.04)', border: row.isNew ? '1px solid rgba(21,201,163,.5)' : '1px solid rgba(255,255,255,.06)', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${fillPct}%`, background: isTop3 ? 'linear-gradient(90deg,rgba(21,201,163,.22),rgba(43,98,234,.15))' : 'rgba(255,255,255,.03)', zIndex: 0 }} />
       <div style={{ position: 'relative', zIndex: 1 }}>
         <span className="kp-num" style={{ font: `${isTop3?'800':'700'} ${isTop3?52:40}px/.85 var(--font-display)`, letterSpacing: '-.05em', color: isTop3 ? '#fff' : 'rgba(255,255,255,.5)' }}>{row.rank}</span>
       </div>
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <span style={{ font: `${isTop3?'700':'600'} ${isTop3?32:26}px/1 var(--font-display)`, letterSpacing: '-.022em', color: isTop3 ? '#fff' : 'rgba(255,255,255,.85)' }}>{row.name}</span>
+      <div style={{ position: 'relative', zIndex: 1, minWidth: 0 }}>
+        <div style={{ font: `${isTop3?'700':'600'} ${isTop3?32:26}px/1 var(--font-display)`, letterSpacing: '-.022em', color: isTop3 ? '#fff' : 'rgba(255,255,255,.85)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{row.name}</div>
+        {row.team && (
+          <div style={{ marginTop: 5, font: `600 ${isTop3?17:15}px/1 var(--font-display)`, color: 'rgba(21,201,163,.9)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{row.team}</div>
+        )}
       </div>
-      <div style={{ position: 'relative', zIndex: 1, font: '600 13px/1 var(--font-mono)', color: 'rgba(255,255,255,.4)' }}>–</div>
       <div className="kp-num" style={{ position: 'relative', zIndex: 1, font: `${isTop3?'800':'700'} ${isTop3?36:28}px/1 var(--font-display)`, letterSpacing: '-.03em', textAlign: 'right', color: isTop3 ? '#15C9A3' : '#fff' }}>{row.totalScore}</div>
     </div>
   )

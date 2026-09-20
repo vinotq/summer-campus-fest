@@ -4,7 +4,7 @@ import * as sessionsRepo from '../db/repo/sessions.js';
 import * as answersRepo from '../db/repo/answers.js';
 import * as settingsRepo from '../db/repo/settings.js';
 import { questionTypes } from '../game/questionTypes.js';
-import { buildTopList } from '../game/sessionFlow.js';
+import { buildTopList, emitTop } from '../game/sessionFlow.js';
 import { config } from '../config.js';
 import { emitQuestionsChanged, emitPlayersVisibility } from '../realtime/adminChannel.js';
 import { emitTopUpdate } from '../realtime/dashboardChannel.js';
@@ -270,8 +270,7 @@ export async function adminRoutes(fastify) {
   // DELETE /api/admin/data/players
   fastify.delete('/api/admin/data/players', { preHandler: requireAdmin }, async (_request, reply) => {
     sessionsRepo.clearAllPlayers();
-    const io = fastify.io;
-    if (io) emitTopUpdate(io, []);
+    emitTop();
     return reply.send({ ok: true });
   });
 
